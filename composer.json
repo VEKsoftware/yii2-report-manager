@@ -1,0 +1,21 @@
+{
+    "name": "veksoftware/yii2-report-manager",
+    "description": "Extension for generation reports and setting plans",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","report manager"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergey Okatov",
+            "email": "sokatov@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "veksoftware\\reportmanager\\": ""
+        }
+    }
+}
