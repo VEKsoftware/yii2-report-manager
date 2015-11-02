@@ -19,20 +19,6 @@
         }
     },
     "extra": {
-        "bootstrap": "reportmanager\\base\\Init",
-        "components": [
-            "i18n": {
-                "translations": [
-                    "reportmanager*": {
-                        "class": "yii\i18n\PhpMessageSource",
-                        "basePath": "@reportmanager/messages",
-                        "sourceLanguage": "en-US",
-                        "fileMap": [
-                            "reportmanager": "reportmanager.php",
-                        ]
-                    }
-                ]
-            }
-        ]
+        "bootstrap": "reportmanager\\base\\Init"
     }
 }
