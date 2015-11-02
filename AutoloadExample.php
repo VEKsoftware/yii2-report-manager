@@ -1,6 +1,6 @@
 <?php
 
-namespace veksoftware\reportmanager;
+namespace reportmanager;
 
 /**
  * This is just an example.

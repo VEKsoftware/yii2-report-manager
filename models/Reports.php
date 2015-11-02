@@ -1,6 +1,6 @@
 <?php
 
-namespace veksoftware\reportmanager\models;
+namespace reportmanager\models;
 
 use Yii;
 
