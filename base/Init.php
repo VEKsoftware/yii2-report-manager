@@ -1,6 +1,6 @@
 <?php
 
-namespace reportmanager;
+namespace reportmanager\base;
 
 use yii\base\Behavior;
 use yii\base\BootstrapInterface;
@@ -11,7 +11,7 @@ class Init implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->on(Application::EVENT_BEFORE_REQUEST, function () {
-             // do something here
+            $this->registerTranslations();
         });
     }
 
@@ -28,4 +28,5 @@ class Init implements BootstrapInterface
 
         ];
     }
+
 }

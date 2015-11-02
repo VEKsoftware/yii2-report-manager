@@ -3,7 +3,7 @@
 namespace reportmanager\models;
 
 use Yii;
-use reportmanager\behaviors\Translations;
+//use reportmanager\behaviors\Translations;
 
 /**
  * This is the model class for table "{{%reports_conditions}}".
@@ -51,6 +51,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         ];
     }
 
+/*
     public function behaviors()
     {
         return [
@@ -59,5 +60,5 @@ class ReportsConditions extends \yii\db\ActiveRecord
             ],
         ];
     }
-
+*/
 }

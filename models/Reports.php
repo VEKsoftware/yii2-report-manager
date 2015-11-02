@@ -3,7 +3,6 @@
 namespace reportmanager\models;
 
 use Yii;
-use reportmanager\behaviors\Translations;
 
 /**
  * This is the model class for table "{{%reports}}".
@@ -48,15 +47,6 @@ class Reports extends \yii\db\ActiveRecord
             'class_name' => Yii::t('reportmanager', 'Класс модели таблицы, по которой строится отчет'),
             'options' => Yii::t('reportmanager', 'Возможные дополнительные опции'),
             'template' => Yii::t('reportmanager', 'Шаблон для отчета'),
-        ];
-    }
-
-    public function behaviors()
-    {
-        return [
-            'translations' => [
-                'class' => Translations::className(),
-            ],
         ];
     }
 
