@@ -23,11 +23,6 @@ class ReportManagerController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-/*
-            'translations' => [
-                'class' => Translations::className(),
-            ],
-*/
         ];
     }
 

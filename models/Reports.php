@@ -12,6 +12,8 @@ use Yii;
  * @property string $class_name
  * @property string $options
  * @property string $template
+ *
+ * @property ReportsConditions[] $reportsConditions
  */
 class Reports extends \yii\db\ActiveRecord
 {
@@ -43,11 +45,18 @@ class Reports extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('reportmanager', 'ID'),
-            'name' => Yii::t('reportmanager', 'Название отчета'),
-            'class_name' => Yii::t('reportmanager', 'Класс модели таблицы, по которой строится отчет'),
-            'options' => Yii::t('reportmanager', 'Возможные дополнительные опции'),
-            'template' => Yii::t('reportmanager', 'Шаблон для отчета'),
+            'name' => Yii::t('reportmanager', 'Report Name'),
+            'class_name' => Yii::t('reportmanager', 'Data Class'),
+            'options' => Yii::t('reportmanager', 'Options'),
+            'template' => Yii::t('reportmanager', 'Report Template'),
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReportsConditions()
+    {
+        return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id']);
+    }
 }
