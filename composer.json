@@ -29,10 +29,10 @@
                         "sourceLanguage": "en-US",
                         "fileMap": [
                             "reportmanager": "reportmanager.php",
-                        ],
-                    },
-                ],
-            },
+                        ]
+                    }
+                ]
+            }
         ]
-    },
+    }
 }
