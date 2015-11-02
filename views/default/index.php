@@ -5,6 +5,7 @@
         The action belongs to the controller "<?= get_class($this->context) ?>"
         in the "<?= $this->context->module->id ?>" module.
     </p>
+    <p><?=$content?></p>
     <p>
         You may customize this page by editing the following file:<br>
         <code><?= __FILE__ ?></code>

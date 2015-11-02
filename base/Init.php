@@ -11,7 +11,7 @@ class Init implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->on(Application::EVENT_BEFORE_REQUEST, function () {
-            $this->registerTranslations();
+//            $this->registerTranslations();
         });
     }
 
@@ -19,7 +19,7 @@ class Init implements BootstrapInterface
     {
         \Yii::$app->i18n->translations['reportmanager'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'ru',
+            'sourceLanguage' => 'en',
             'basePath' => '@reportmanager/messages',
 
             'fileMap' => [

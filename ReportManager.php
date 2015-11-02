@@ -10,7 +10,21 @@ class ReportManager extends \yii\base\Module
     public function init()
     {
         parent::init();
-
-        // custom initialization code goes here
+        $this->registerTranslations();
     }
+
+    public function registerTranslations()
+    {
+        \Yii::$app->i18n->translations['reportmanager'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en',
+            'basePath' => '@reportmanager/messages',
+
+            'fileMap' => [
+                'reportmanager' => 'reportmanager.php',
+            ],
+
+        ];
+    }
+
 }

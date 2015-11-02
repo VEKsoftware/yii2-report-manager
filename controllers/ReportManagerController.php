@@ -30,6 +30,15 @@ class ReportManagerController extends Controller
     {
         return Yii::getAlias('@reportmanager/views');
     }
+
+/*
+    public function beforeAction($action)
+    {
+//        $this->module->registerTranslation();
+        parent::beforeAction($action);
+    }
+*/
+
     /**
      * Lists all Reports models.
      * @return mixed
