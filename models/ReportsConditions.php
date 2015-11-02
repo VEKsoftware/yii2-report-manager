@@ -3,9 +3,10 @@
 namespace reportmanager\models;
 
 use Yii;
+use reportmanager\behaviors\Translations;
 
 /**
- * This is the model class for table "reports_conditions".
+ * This is the model class for table "{{%reports_conditions}}".
  *
  * @property integer $id
  * @property integer $report_id
@@ -20,7 +21,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'reports_conditions';
+        return '{{%reports_conditions}}';
     }
 
     /**
@@ -42,11 +43,21 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'report_id' => 'Report ID',
-            'attribute_name' => 'Имя поля задается через атрибут модели',
-            'operation' => 'Операция, в которой участвует поле',
-            'function' => 'Функция, которая применяется к полю атрибута',
+            'id' => Yii::t('reportmanager', 'ID'),
+            'report_id' => Yii::t('reportmanager', 'Report ID'),
+            'attribute_name' => Yii::t('reportmanager', 'Имя поля задается через атрибут модели'),
+            'operation' => Yii::t('reportmanager', 'Операция, в которой участвует поле'),
+            'function' => Yii::t('reportmanager', 'Функция, которая применяется к полю атрибута'),
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            'translations' => [
+                'class' => Translations::className(),
+            ],
+        ];
+    }
+
 }
