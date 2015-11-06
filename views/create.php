@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model reportmanager\models\Reports */
 
-$this->title = Yii::t('reportmanager', 'Create Reports');
+$this->title = Yii::t('reportmanager', 'Create Report');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('reportmanager', 'Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

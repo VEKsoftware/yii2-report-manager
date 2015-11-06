@@ -45,13 +45,24 @@ class ReportManagerController extends Controller
      */
     public function actionIndex()
     {
+        $model = new Reports();
+
+        $model->load(Yii::$app->request->post()) && $model->save();
+/*
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            $model = $this->findModel($id);
+//            $model = new Reports(); //reset model
+        }
+*/
         $dataProvider = new ActiveDataProvider([
             'query' => Reports::find(),
+            'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
         ]);
 
-//        return $this->render('@reportmanager/views/index', [
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 
@@ -81,6 +92,7 @@ class ReportManagerController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+//                'classes_list' => $this->module->reportClasses,
             ]);
         }
     }
@@ -95,7 +107,7 @@ class ReportManagerController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && !Yii::$app->request->isPjax()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

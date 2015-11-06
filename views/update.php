@@ -5,9 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model reportmanager\models\Reports */
 
-$this->title = Yii::t('reportmanager', 'Update {modelClass}: ', [
-    'modelClass' => 'Reports',
-]) . ' ' . $model->name;
+$this->title = Yii::t('reportmanager', 'Update Report: ') . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('reportmanager', 'Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('reportmanager', 'Update');

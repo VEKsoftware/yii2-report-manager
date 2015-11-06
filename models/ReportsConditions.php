@@ -17,6 +17,8 @@ use Yii;
  */
 class ReportsConditions extends \yii\db\ActiveRecord
 {
+    private $_enabled;
+
     /**
      * @inheritdoc
      */
@@ -58,5 +60,15 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function getReport()
     {
         return $this->hasOne(Reports::className(), ['id' => 'report_id']);
+    }
+
+    public function getEnabled()
+    {
+        return $this->_enabled;
+    }
+
+    public function setEnabled($flag)
+    {
+        $this->_enabled = $flag;
     }
 }
