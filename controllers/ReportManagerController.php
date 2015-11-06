@@ -4,6 +4,7 @@ namespace reportmanager\controllers;
 
 use Yii;
 use reportmanager\models\Reports;
+use reportmanager\models\ReportsConditions;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -48,19 +49,35 @@ class ReportManagerController extends Controller
         $model = new Reports();
 
         $model->load(Yii::$app->request->post()) && $model->save();
-/*
-        if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            $model = $this->findModel($id);
-//            $model = new Reports(); //reset model
-        }
-*/
+
         $dataProvider = new ActiveDataProvider([
             'query' => Reports::find(),
             'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
         ]);
 
         return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Lists all Conditions for the Reports models.
+     * @return mixed
+     */
+    public function actionConditions($report_id)
+    {
+        $report = $this->findModel($report_id);
+        $model = new ReportsConditions(['report_id' => $report->id]);
+
+        $model->load(Yii::$app->request->post()) && $model->save();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $report->getReportsConditions(),
+            'sort' => ['defaultOrder' => ['attribute_name' => SORT_ASC]],
+        ]);
+
+        return $this->render('conditions', [
             'dataProvider' => $dataProvider,
             'model' => $model,
         ]);
@@ -107,7 +124,7 @@ class ReportManagerController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save() && !Yii::$app->request->isPjax()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && !Yii::$app->request->isPjax) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -144,4 +161,5 @@ class ReportManagerController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }
