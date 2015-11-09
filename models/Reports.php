@@ -22,7 +22,7 @@ class Reports extends \yii\db\ActiveRecord
 {
     public static $classes_list;
     private $_config;
-    public $test;
+    public $condition;
 
     /**
      * @inheritdoc
@@ -42,7 +42,7 @@ class Reports extends \yii\db\ActiveRecord
             [['options', 'template','description'], 'string'],
             [['name'], 'string', 'max' => 128],
             [['class_name'], 'string', 'max' => 255],
-            [['test'],'string'],
+            [['condition'],'validateCondition'],
             [['class_name'], 'in', 'range' => ArrayHelper::getColumn(self::$classes_list,'class'), 'message' => Yii::t('reportmanager','Wrong class')],
         ];
     }
@@ -72,16 +72,31 @@ class Reports extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * Preform initializtion either in init() or in afterFind
+     * depending on wheather the model is new or saved.
+     * Main task is readin the config of the module.
+     */
     public function init()
     {
         parent::init();
         $this->retrieveConfig();
     }
 
+    /**
+     * Preform initializtion either in init() or in afterFind
+     * depending on wheather the model is new or saved.
+     * Main task is readin the config of the module.
+     */
     public function afterFind()
     {
         parent::afterFind();
         $this->retrieveConfig();
+    }
+
+    public function validateCondition()
+    {
+        return true;
     }
 
     /**
@@ -93,13 +108,14 @@ class Reports extends \yii\db\ActiveRecord
     }
 
     /**
-     * Get all properties for the current report
+     * Get all available properties for the current report
      *
-     * @return \yii\db\ActiveQuery list of all properties available to this peport
+     * @return array list of all properties available to this report
+     * Array structure is ['attribute_name'=>['attribute'=>'...', 'label' => '...', 'other' => ....],[...]]
      */
     public function getAvailableProps()
     {
-        return isset($this->_config['properties'])? $this->_config['properties']: NULL;
+        return isset($this->_config['properties'])? ArrayHelper::index($this->_config['properties'],'attribute'): NULL;
     }
 
     /**

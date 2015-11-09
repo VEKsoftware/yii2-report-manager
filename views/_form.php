@@ -65,7 +65,8 @@ $this->registerJs(
                     'label' => Yii::t('reportmanager','Operations'),
                     'format' => 'raw',
                     'value' => function($item) use($model) {
-                        return Html::activeDropDownList($model,'test',['x'=>'y','z'=>'h']);
+//                        return Html::activeDropDownList($model,'test',['x'=>'y','z'=>'h']);
+                        return '';
                     },
                 ],
             ],

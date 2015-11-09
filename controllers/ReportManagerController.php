@@ -79,6 +79,7 @@ class ReportManagerController extends Controller
 
         return $this->render('conditions', [
             'dataProvider' => $dataProvider,
+            'report' => $report,
             'model' => $model,
         ]);
     }
