@@ -9,17 +9,7 @@ use yii\widgets\ActiveForm;
 use yii\web\JsExpression;
 use reportmanager\models\ReportsConditions;
 
-$this->title = Yii::t('reportmanager', 'Conditions');
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="reports-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= isset($report->id)? Html::a(Yii::t('reportmanager', 'Add Condition'), ['create'], ['class' => 'btn btn-success', 'id' => 'add_condition']) : '' ?>
-    </p>
-
 <?php Pjax::begin([
         'id' => 'conditions',
 //        'linkSelector' => '#reports a',
@@ -27,7 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ]) ?>
 <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
 
-    <?= GridView::widget([
+    <?= $form->errorSummary($dataProvider->allModels); ?>
+
+    <?= isset($report->id)? GridView::widget([
         'dataProvider' => $dataProvider,
         'id' => 'table_conditions',
         'rowOptions' => function($model, $key, $index, $grid) {
@@ -54,7 +46,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     ;
                 },
             ],
-            'function',
+            [
+                'attribute' => 'function',
+                'format' => 'raw',
+                'value' => function($model, $key, $index, $column) use($report,$form){
+                    return ''
+                        .$form->field($model, "[$index]function")->dropDownList(ReportsConditions::getOperationsList())->label(false)
+                    ;
+                },
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -67,36 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
         ],
-    ]); ?>
+    ]) : ''; ?>
     <?= Html::submitButton(Yii::t('reportmanager', 'Save'), ['class' => 'btn btn-primary']) ?>
+
+    <?= Html::submitButton(Yii::t('reportmanager', 'Add Condition'), ['class' => 'btn btn-primary', 'name' => 'add-condition']) ?>
+
 <?php ActiveForm::end(); ?>
 <?php Pjax::end() ?>
-</div>
-<?php $this->registerJs('
-    $("#add_condition").click(function(event) {
-        event.preventDefault();
-        $.pjax.reload({container:"#conditions", type: "POST", push: false, replace: false});  //Reload GridView
-/*
-        var maxValue = Math.max.apply(Math,$(\'#table_conditions tbody tr\').map(function(){ return this.getAttribute("data-index");}));
-        var number = maxValue + 1;
-        var col1 = '
-            .json_encode(
-                Html::dropDownList('ReportsConditions[_XXX_][attribute_name]',NULL, ArrayHelper::map($report->availableProps,'attribute','label'),[
-                    'class' => 'form-control',
-                    'id' => 'reportsconditions-_XXX_-attribute_name',
-                ])
-            ).';
-        var col2 = '
-            .json_encode(
-                Html::dropDownList('ReportsConditions[_XXX_][operation]',NULL, ReportsConditions::getOperationsList(),['class' => 'form-control'])
-            ).';
-        var html = \'<tr data-index="\' + number + \'">\' +
-                \'<td>\' + col1 + \'</td>\' +
-                \'<td>\' + col2 + \'</td>\' +
-                \'<td></td>\' +
-                \'<td></td>\' +
-                \'</td>\';
-        $("#table_conditions tbody").append(html.replace(/_XXX_/g,number));
-*/
-    })
-')?>

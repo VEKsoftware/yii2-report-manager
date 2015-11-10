@@ -5,6 +5,7 @@ namespace reportmanager\controllers;
 use Yii;
 use reportmanager\models\Reports;
 use reportmanager\models\ReportsConditions;
+use yii\data\ArrayDataProvider;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -46,18 +47,13 @@ class ReportManagerController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Reports();
-
-        $model->load(Yii::$app->request->post()) && $model->save();
-
-        $dataProvider = new ActiveDataProvider([
+        $repDataProvider = new ActiveDataProvider([
             'query' => Reports::find(),
             'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
         ]);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'model' => $model,
+            'dataProvider' => $repDataProvider,
         ]);
     }
 
@@ -65,22 +61,36 @@ class ReportManagerController extends Controller
      * Lists all Conditions for the Reports models.
      * @return mixed
      */
-    public function actionConditions($report_id)
+    public function actionConditions($report_id, $add = NULL)
     {
         $report = $this->findModel($report_id);
-        $model = new ReportsConditions(['report_id' => $report->id]);
+        $post = Yii::$app->request->post();
+        if(NULL !== Yii::$app->request->post('ReportsConditions')) {
+            $models = ReportsConditions::createConditions(Yii::$app->request->post('ReportsConditions', []), $report->id);
+        } else {
+            $models = $report->reportsConditions;
+        }
 
-        $model->load(Yii::$app->request->post()) && $model->save();
+        if(ReportsConditions::loadMultiple($models,Yii::$app->request->post()) && ReportsConditions::validateMultiple($models)) {
+            // Delete here the conditions which are not in $_POST
+            foreach($models as $model) {
+                $model->save();
+            }
+        }
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $report->getReportsConditions(),
-            'sort' => ['defaultOrder' => ['attribute_name' => SORT_ASC]],
+        if(isset($add)) {
+            $models[] = new ReportsConditions(['report_id' => $report->id]);
+        }
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $models,
+//            'sort' => ['defaultOrder' => ['attribute_name' => SORT_ASC]],
         ]);
 
         return $this->render('conditions', [
             'dataProvider' => $dataProvider,
             'report' => $report,
-            'model' => $model,
+            'models' => $models,
         ]);
     }
 
@@ -106,11 +116,10 @@ class ReportManagerController extends Controller
         $model = new Reports();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-//                'classes_list' => $this->module->reportClasses,
             ]);
         }
     }
@@ -123,15 +132,33 @@ class ReportManagerController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $report = $this->findModel($id);
+        $report->load(Yii::$app->request->post()) && $report->save();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save() && !Yii::$app->request->isPjax) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(NULL !== Yii::$app->request->post('ReportsConditions')) {
+            $cond_models = ReportsConditions::createConditions(Yii::$app->request->post('ReportsConditions', []), $report->id);
+            if(ReportsConditions::loadMultiple($cond_models,Yii::$app->request->post()) && ReportsConditions::validateMultiple($cond_models)) {
+                // Delete here the conditions which are not in $_POST
+                foreach($cond_models as $cond_model) {
+                    $cond_model->save();
+                }
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $cond_models = $report->reportsConditions;
         }
+
+        if(NULL !== Yii::$app->request->post('add-condition')) {
+            $cond_models[] = new ReportsConditions(['report_id' => $report->id]);
+        }
+
+        $condDataProvider = new ArrayDataProvider([
+            'allModels' => $cond_models,
+        ]);
+
+        return $this->render('update', [
+            'report' => $report,
+            'condDataProvider' => $condDataProvider,
+        ]);
     }
 
     /**

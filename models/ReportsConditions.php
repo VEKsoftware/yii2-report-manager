@@ -35,7 +35,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         return [
             [['report_id', 'attribute_name', 'operation', 'function'], 'required'],
             [['report_id'], 'integer'],
-            [['operation'], 'string'],
+            [['operation'], 'string', 'max' => 20],
             [['attribute_name', 'function'], 'string', 'max' => 255]
         ];
     }
@@ -52,6 +52,44 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'operation' => Yii::t('reportmanager', 'Operation'),
             'function' => Yii::t('reportmanager', 'Function on Attr.'),
         ];
+    }
+
+    public static function createConditions($cond_array,$report_id)
+    {
+        $conditions = [];
+        foreach($cond_array as $cond_params) {
+            if($cond_params['id']) {
+                $cond = ReportsConditions::findOne($cond_params['id']);
+                if($cond->report_id !== $report_id) {
+                    continue;
+                }
+                $conditions[] = $cond;
+            } else {
+                $conditions[] = new self(['report_id' => $report_id]);
+            }
+        }
+        return $conditions;
+    }
+
+    public static function getOperationsList()
+    {
+        return [
+            'select' => Yii::t('reportmanager','Select'),
+            'where' => Yii::t('reportmanager','Condition'),
+            'group' => Yii::t('reportmanager','Grouping'),
+            'order' => Yii::t('reportmanager','Order'),
+        ];
+    }
+
+    public static function getfunctionsList($operation = NULL)
+    {
+        $functions = [
+            'select' => [
+                
+            ],
+        ];
+
+        return isset($operation)? $functions[$operation] : $functions;
     }
 
     /**

@@ -17,6 +17,8 @@ return [
     'Update Report: ' => 'Править Отчет: ',
     'Update' => 'Править',
     'Delete' => 'Удалить',
+    'Save' => 'Сохранить',
+    'Add Condition' => 'Добавить условие',
 
     // reportmanager\models\Reports
     'Wrong class' => 'Ошибочный класс данных',

@@ -21,8 +21,9 @@ use reportmanager\models\ReportsConditions;
 class Reports extends \yii\db\ActiveRecord
 {
     public static $classes_list;
+    public $conditions;
+
     private $_config;
-    public $condition;
 
     /**
      * @inheritdoc
@@ -42,7 +43,6 @@ class Reports extends \yii\db\ActiveRecord
             [['options', 'template','description'], 'string'],
             [['name'], 'string', 'max' => 128],
             [['class_name'], 'string', 'max' => 255],
-            [['condition'],'validateCondition'],
             [['class_name'], 'in', 'range' => ArrayHelper::getColumn(self::$classes_list,'class'), 'message' => Yii::t('reportmanager','Wrong class')],
         ];
     }
@@ -94,9 +94,29 @@ class Reports extends \yii\db\ActiveRecord
         $this->retrieveConfig();
     }
 
-    public function validateCondition()
+    public function validateCondition($attribute, $params)
     {
-        return true;
+        if(!is_array($this->$attribute)) {
+            $this->addError($attribute,Yii::t('reportmanager','{attribute} must be an array'));
+            return false;
+        }
+
+        return ReportsConditions::loadMultiple($this->conditions,$this->$attribute,'');
+    }
+
+    public function loadConditions($cond_array)
+    {
+        foreach($cond_array as $cond_params) {
+            if(isset($cond_params['id'])) {
+                $cond = ReportsConditions::findOne($cond_params['id']);
+                if($cond->report_id !== $this->id) {
+//                    $this->
+                }
+                $this->conditions[] = $cond;
+            } else {
+                $this->conditions[] = new ReportsConditions(['report_id' => $this->id]);
+            }
+        }
     }
 
     /**
