@@ -133,7 +133,7 @@ class ReportManagerController extends Controller
     public function actionUpdate($id)
     {
         $report = $this->findModel($id);
-        $report->load(Yii::$app->request->post()) && $report->save();
+        $success = $report->load(Yii::$app->request->post()) && $report->save() && NULL !== Yii::$app->request->post('save-report');
 
         if(NULL !== Yii::$app->request->post('ReportsConditions')) {
             $cond_models = ReportsConditions::createConditions(Yii::$app->request->post('ReportsConditions', []), $report->id);
@@ -142,13 +142,27 @@ class ReportManagerController extends Controller
                 foreach($cond_models as $cond_model) {
                     $cond_model->save();
                 }
+            } else {
+                $success = false;
             }
         } else {
             $cond_models = $report->reportsConditions;
         }
 
+        if($success) {
+            return $this->redirect(['view', 'id' => $report->id]);
+        }
+
         if(NULL !== Yii::$app->request->post('add-condition')) {
             $cond_models[] = new ReportsConditions(['report_id' => $report->id]);
+        } elseif(NULL !== Yii::$app->request->post('delete')) {
+            $cond_models = array_filter($cond_models,function($v) {
+                if($v->id == Yii::$app->request->post('delete')){
+                    $v->delete();
+                    return false;
+                }
+                return true;
+            });
         }
 
         $condDataProvider = new ArrayDataProvider([

@@ -14,8 +14,6 @@ use reportmanager\models\Reports;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
-
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'class_name')->dropDownList(ArrayHelper::map(Reports::$classes_list,'class','label'),['maxlength' => true]) ?>
@@ -23,8 +21,12 @@ use reportmanager\models\Reports;
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
 <div class="form-group">
-    <?= Html::submitButton($model->isNewRecord ? Yii::t('reportmanager', 'Create') : Yii::t('reportmanager', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?= Html::submitButton($model->isNewRecord ? Yii::t('reportmanager', 'Create') : Yii::t('reportmanager', 'Save'), [
+        'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+        'data' => [
+            'pjax' => true,
+        ],
+        'name' => 'save-report',
+    ]) ?>
 </div>
-
-<?php ActiveForm::end(); ?>
 

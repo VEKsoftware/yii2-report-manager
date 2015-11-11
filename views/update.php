@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 use yii\web\JsExpression;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model reportmanager\models\Reports */
@@ -15,26 +16,34 @@ $this->params['breadcrumbs'][] = Yii::t('reportmanager', 'Update');
 <div class="reports-update">
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php Pjax::begin([
+        'id' => 'all',
+//        'linkSelector' => '#reports a',
+//        'enablePushState' => false,
+        'formSelector' => 'form',
+        'clientOptions' => [
+//            'async' => true,
+        ],
+    ]) ?>
+<?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
+
   <div class="row">
   <div class="col-sm-4">
+
     <?= $this->render('_form', [
         'model' => $report,
+        'form' => $form,
     ]) ?>
   </div>
 
   <div class="col-sm-8">
-    <?php Pjax::begin([
-        'id' => 'conditions',
-//        'linkSelector' => '#reports a',
-//        'enablePushState' => false
-    ]) ?>
     <?= $this->render('_form_conditions', [
         'dataProvider' => $condDataProvider,
         'report' => $report,
+        'form' => $form,
     ]) ?>
+  </div>
+  </div>
+<?php ActiveForm::end(); ?>
     <?php Pjax::end() ?>
-  </div>
-
-
-  </div>
 </div>

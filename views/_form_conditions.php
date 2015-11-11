@@ -10,14 +10,6 @@ use yii\web\JsExpression;
 use reportmanager\models\ReportsConditions;
 
 ?>
-<?php Pjax::begin([
-        'id' => 'conditions',
-//        'linkSelector' => '#reports a',
-        'enablePushState' => false
-]) ?>
-<?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
-
-    <?= $form->errorSummary($dataProvider->allModels); ?>
 
     <?= isset($report->id)? GridView::widget([
         'dataProvider' => $dataProvider,
@@ -60,17 +52,28 @@ use reportmanager\models\ReportsConditions;
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{delete}',
                 'buttons' => [
-                    'delete' => function ($url, $model, $key) {
-                        // <a href="/rep/delete?id=1" title="Удалить" aria-label="Удалить" data-confirm="Вы уверены, что хотите удалить этот элемент?" data-method="post" data-pjax="0"><span class="glyphicon glyphicon-trash"></span></a>
-                        return 1 === 1 ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $url,['title' => Yii::t('reportmanager','Delete')]) : '';
+                    'delete' => function ($url, $model, $key) use($report) {
+                        if($model->id) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['update','id' =>$report->id ],[
+                                'title' => Yii::t('reportmanager','Delete'),
+                                'aria-label' => Yii::t('reportmanager', 'Delete'),
+                                'data' => [
+                                    'confirm' => Yii::t('reportmanager','Are you sure want to delete this item?'),
+                                    'method' => 'post',
+                                    'pjax' => false,
+                                    'params' => ['delete' => $model->id],
+                                ],
+                            ]);
+                        } else {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', '#',[
+                                'title' => Yii::t('reportmanager','Delete'),
+                                'aria-label' => Yii::t('reportmanager', 'Delete'),
+                                'onclick' => new JsExpression('$(this).parents("tr").remove(); return false;'),
+                            ]);
+                        }
                     },
                 ]
             ],
         ],
     ]) : ''; ?>
-    <?= Html::submitButton(Yii::t('reportmanager', 'Save'), ['class' => 'btn btn-primary']) ?>
-
     <?= Html::submitButton(Yii::t('reportmanager', 'Add Condition'), ['class' => 'btn btn-primary', 'name' => 'add-condition']) ?>
-
-<?php ActiveForm::end(); ?>
-<?php Pjax::end() ?>
