@@ -4,6 +4,8 @@ namespace reportmanager\models;
 
 use Yii;
 
+use yii\helpers\ArrayHelper;
+
 /**
  * This is the model class for table "{{%reports_conditions}}".
  *
@@ -17,7 +19,8 @@ use Yii;
  */
 class ReportsConditions extends \yii\db\ActiveRecord
 {
-    private $_enabled;
+    public $value;
+    private $_config;
 
     /**
      * @inheritdoc
@@ -57,13 +60,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public static function createConditions($cond_array,$report_id)
     {
         $conditions = [];
+        $ids = array_filter(ArrayHelper::getColumn($cond_array,'id'));
+        $cond = ArrayHelper::index(ReportsConditions::find()->where(['and', ['id' => $ids], ['report_id' => $report_id]])->with('report')->all(),'id');
         foreach($cond_array as $cond_params) {
-            if($cond_params['id']) {
-                $cond = ReportsConditions::findOne($cond_params['id']);
-                if($cond->report_id !== $report_id) {
-                    continue;
-                }
-                $conditions[] = $cond;
+            if($cond_params['id'] && isset($cond[$cond_params['id']])) {
+                $conditions[] = $cond[$cond_params['id']];
             } else {
                 $conditions[] = new self(['report_id' => $report_id]);
             }
@@ -92,17 +93,24 @@ class ReportsConditions extends \yii\db\ActiveRecord
         return isset($operation)? $functions[$operation] : $functions;
     }
 
+    public function init()
+    {
+        parent::init();
+        
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getReport()
     {
         return $this->hasOne(Reports::className(), ['id' => 'report_id']);
-    }
-
-    public function getEnabled()
-    {
-        return $this->_enabled;
     }
 
     public function setEnabled($flag)

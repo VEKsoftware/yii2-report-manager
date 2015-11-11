@@ -23,7 +23,7 @@ use reportmanager\models\ReportsConditions;
                 'format' => 'raw',
                 'value' => function($model, $key, $index, $column) use($report,$form){
                     return ''
-                        .$form->field($model, "[$index]attribute_name")->dropDownList(ArrayHelper::map($report->availableProps,'attribute','label'))->label(false)
+                        .$form->field($model, "[$index]attribute_name")->dropDownList(ArrayHelper::map($model->report->availableProps,'attribute','label'))->label(false)
                         .$form->field($model, "[$index]id",['template' => '{input}', 'options' => ['tag' => 'span']])->hiddenInput()->label(false)
                         .$form->field($model, "[$index]report_id",['template' => '{input}', 'options' => ['tag' => 'span']])->hiddenInput()->label(false)
                     ;
@@ -32,7 +32,7 @@ use reportmanager\models\ReportsConditions;
             [
                 'attribute' => 'operation',
                 'format' => 'raw',
-                'value' => function($model, $key, $index, $column) use($report,$form){
+                'value' => function($model, $key, $index, $column) use($form){
                     return ''
                         .$form->field($model, "[$index]operation")->dropDownList(ReportsConditions::getOperationsList())->label(false)
                     ;
@@ -41,9 +41,20 @@ use reportmanager\models\ReportsConditions;
             [
                 'attribute' => 'function',
                 'format' => 'raw',
-                'value' => function($model, $key, $index, $column) use($report,$form){
+                'value' => function($model, $key, $index, $column) use($form){
                     return ''
                         .$form->field($model, "[$index]function")->dropDownList(ReportsConditions::getOperationsList())->label(false)
+                    ;
+                },
+            ],
+
+            [
+                'attribute' => 'value',
+                'format' => 'raw',
+                'value' => function($model, $key, $index, $column) use($report,$form){
+                    
+                    return ''
+                        .$form->field($model, "[$index]value")->dropDownList(['x'=>'y'])->label(false)
                     ;
                 },
             ],

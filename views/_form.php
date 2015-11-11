@@ -16,7 +16,8 @@ use reportmanager\models\Reports;
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'class_name')->dropDownList(ArrayHelper::map(Reports::$classes_list,'class','label'),['maxlength' => true]) ?>
+        <?= $form->field($model, 'class_name')->dropDownList(
+            array_combine(Reports::$classes_list,array_map(function($v){ return $v::getModelLabel(); },Reports::$classes_list)),['maxlength' => true]) ?>
 
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 

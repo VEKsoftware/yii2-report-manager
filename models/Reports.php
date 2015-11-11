@@ -5,6 +5,7 @@ namespace reportmanager\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 
+use reportmanager\ReportManagerInterface;
 use reportmanager\models\ReportsConditions;
 
 /**
@@ -24,6 +25,7 @@ class Reports extends \yii\db\ActiveRecord
     public $conditions;
 
     private $_config;
+    private $_model_class;
 
     /**
      * @inheritdoc
@@ -43,7 +45,7 @@ class Reports extends \yii\db\ActiveRecord
             [['options', 'template','description'], 'string'],
             [['name'], 'string', 'max' => 128],
             [['class_name'], 'string', 'max' => 255],
-            [['class_name'], 'in', 'range' => ArrayHelper::getColumn(self::$classes_list,'class'), 'message' => Yii::t('reportmanager','Wrong class')],
+            [['class_name'], 'in', 'range' => self::$classes_list, 'message' => Yii::t('reportmanager','Wrong class')],
         ];
     }
 
@@ -62,13 +64,12 @@ class Reports extends \yii\db\ActiveRecord
         ];
     }
 
-    protected function retrieveConfig()
+    protected function initClass()
     {
         if(isset($this->class_name)) {
-            $list = ArrayHelper::index(self::$classes_list,'class');
-            if(isset($list[$this->class_name])) {
-                $this->_config = $list[$this->class_name];
-            }
+            $this->_model_class = new $this->class_name;
+            if(! $this->_model_class instanceof ReportManagerInterface)
+                throw new \yii\base\InvalidParamException('The classes for ReportManager must implement interface of ReportManagerInterface class');
         }
     }
 
@@ -80,7 +81,7 @@ class Reports extends \yii\db\ActiveRecord
     public function init()
     {
         parent::init();
-        $this->retrieveConfig();
+        $this->initClass();
     }
 
     /**
@@ -91,40 +92,17 @@ class Reports extends \yii\db\ActiveRecord
     public function afterFind()
     {
         parent::afterFind();
-        $this->retrieveConfig();
-    }
-
-    public function validateCondition($attribute, $params)
-    {
-        if(!is_array($this->$attribute)) {
-            $this->addError($attribute,Yii::t('reportmanager','{attribute} must be an array'));
-            return false;
-        }
-
-        return ReportsConditions::loadMultiple($this->conditions,$this->$attribute,'');
-    }
-
-    public function loadConditions($cond_array)
-    {
-        foreach($cond_array as $cond_params) {
-            if(isset($cond_params['id'])) {
-                $cond = ReportsConditions::findOne($cond_params['id']);
-                if($cond->report_id !== $this->id) {
-//                    $this->
-                }
-                $this->conditions[] = $cond;
-            } else {
-                $this->conditions[] = new ReportsConditions(['report_id' => $this->id]);
-            }
-        }
+        $this->initClass();
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Returns all conditions related with the current report.
+     *
+     * @return \yii\db\ActiveQuery All related conditions for the Report
      */
     public function getReportsConditions()
     {
-        return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id']);
+        return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id'])->with('report');
     }
 
     /**
@@ -135,7 +113,12 @@ class Reports extends \yii\db\ActiveRecord
      */
     public function getAvailableProps()
     {
-        return isset($this->_config['properties'])? ArrayHelper::index($this->_config['properties'],'attribute'): NULL;
+        if(is_object($this->_model_class)) {
+            $class = $this->_model_class->className();
+            return $class::getReportManagerSettings();
+        } else {
+            return [];
+        }
     }
 
     /**
@@ -147,7 +130,12 @@ class Reports extends \yii\db\ActiveRecord
      */
     public function getClassLabel()
     {
-        return isset($this->_config['label'])? $this->_config['label']:'';
+        if(is_object($this->_model_class)) {
+            $class = $this->_model_class->className();
+            return $class::getModelLabel();
+        } else {
+            return NULL;
+        }
     }
 
 }
