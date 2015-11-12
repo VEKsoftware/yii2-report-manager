@@ -19,6 +19,16 @@
             "reportmanager\\": ""
         }
     },
+    "repositories":[
+        {
+            "type": "git",
+            "url": "https://bitbucket.org/veksoftware/yii2-report-manager.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/bburim/daterangepicker.git"
+        }
+    ],
     "extra": {
         "bootstrap": "reportmanager\\base\\Init"
     }
