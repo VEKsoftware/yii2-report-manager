@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 
 use reportmanager\ReportManagerInterface;
 use reportmanager\models\ReportsConditions;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "{{%reports}}".
@@ -102,7 +103,9 @@ class Reports extends \yii\db\ActiveRecord
      */
     public function getReportsConditions()
     {
-        return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id'])->with('report');
+        return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id'])
+            ->with('report')
+            ->orderBy(['operation' => SORT_ASC,'attribute_name' => SORT_ASC,'function' => SORT_ASC]);
     }
 
     /**
@@ -138,4 +141,27 @@ class Reports extends \yii\db\ActiveRecord
         }
     }
 
+    public function generateReport()
+    {
+        if(!is_object($this->_model_class) || ! $this->_model_class instanceof ModelReportInterface) {
+            throw new \yii\base\InvalidParamException('The classes for ReportManager must implement interface of ReportManagerInterface class');
+        }
+
+        $dataProvider = $this->_model_class->search(NULL);
+        if(! $dataProvider instanceof ActiveDataProvider) {
+            throw new \yii\base\InvalidParamException('The ReportManagerInterface::search() method must return ActiveDataProvider object');
+        }
+
+        $query = $dataProvider->query;
+
+        // Remove all select statements from initial query to prepare for the next cycle
+        $query->select([]);
+
+        foreach($this->reportsConditions as $index => $cond) {
+            // !!!!! May be dataProvider shoud be sent instead of query ?????
+            $cond->prepareQuery($query,$index);
+        }
+
+        return $dataProvider;
+    }
 }

@@ -196,4 +196,20 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $this->param = serialize($val);
     }
 
+    /**
+     *
+     * Apply current condition will be applied to a query using this function.
+     *
+     * @param \yii\db\ActiveQuery &$query The query object which current condition must be applied to
+     */
+    public function prepareQuery(&$query)
+    {
+        switch($this->operation) {
+            case 'select':
+//                $alias
+                $query->addSelect([$alias => $this->attribute_name]);
+                break;
+        }
+    }
+
 }
