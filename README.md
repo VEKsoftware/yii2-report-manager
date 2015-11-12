@@ -25,7 +25,20 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Once the extension is installed, you need to set it up in your config file web.php (main.php) :
 
 ```php
-<?= \reportmanager\AutoloadExample::widget(); ?>```
+    'modules' => [
+        'reportmanager' => [
+            'class' => 'reportmanager\ReportManager',
+            'reportClasses' => [
+                '\app\models\ClassSearch1',
+                '\app\models\ClassSearch2',
+                ...
+                '\app\models\ClassSearchN',
+            ],
+        ]
+    ]
+```
+
+The reportClasses must implement ReportManagerInterface.
