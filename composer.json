@@ -31,7 +31,7 @@
                     "reference": "origin/master"
                 }
             }
-        },
+        }
     ],
     "extra": {
         "bootstrap": "reportmanager\\base\\Init"
