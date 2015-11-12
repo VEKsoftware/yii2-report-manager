@@ -186,4 +186,14 @@ class ReportsConditions extends \yii\db\ActiveRecord
         return $this->_config;
     }
 
+    public function getValue()
+    {
+        return unserialize($this->param);
+    }
+
+    public function setValue($val)
+    {
+        $this->param = serialize($val);
+    }
+
 }
