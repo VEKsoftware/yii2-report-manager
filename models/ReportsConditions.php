@@ -19,7 +19,6 @@ use yii\helpers\ArrayHelper;
  */
 class ReportsConditions extends \yii\db\ActiveRecord
 {
-    public $value;
     private $_config;
 
     /**
@@ -36,10 +35,21 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['report_id', 'attribute_name', 'operation', 'function'], 'required'],
+            [['report_id', 'attribute_name', 'operation'], 'required'],
             [['report_id'], 'integer'],
             [['operation'], 'string', 'max' => 20],
-            [['attribute_name', 'function'], 'string', 'max' => 255]
+            [['attribute_name', 'function','param','plan'], 'string', 'max' => 255],
+
+            [['attribute_name'],function(){ $this->initReportCondition(); return true;}],
+
+            // should be called after attribute_name
+            // This validator checks for param is to be required field
+            [['param'],function($attribute,$param){
+                    if(isset($this->currentFunction) && isset($this->currentFunction['param']) && $this->currentFunction['param'] === 'required'){
+                        return isset($this->$attribute);
+                    }
+                    return true;
+                }, 'skipOnEmpty' => false, 'message' => Yii::t('reportmanager','{attribute} is required.')],
         ];
     }
 
@@ -82,27 +92,82 @@ class ReportsConditions extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getfunctionsList($operation = NULL)
+    public static function getFunctionsList($operation = NULL, $function = NULL)
     {
         $functions = [
             'select' => [
-                
+                'count' => [
+                    'func' => function($attribute,$param) {
+                        return $param ? "COUNT(IF([[$attribute]]=:param,1,NULL))" : 'COUNT(*)';
+                    },
+                    'label' => Yii::t('reportmanager','Count'),
+                    'param' => 'optional',
+                ],
+                'max' => [
+                    'func' => function($attribute,$param) {
+                        return "MAX([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Max'),
+                    'param' => NULL,
+                ],
+                'min' => [
+                    'func' => function($attribute,$param) {
+                        return "MIN([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Min'),
+                    'param' => NULL,
+                ],
+                'year' => [
+                    'func' => function($attribute,$param) {
+                        return "Year([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Year'),
+                    'param' => NULL,
+                ],
+                'month' => [
+                    'func' => function($attribute,$param) {
+                        return "Month([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Month'),
+                    'param' => NULL,
+                ],
+            ],
+            'where' => [
+            ],
+            'group' => [
+            ],
+            'order' => [
             ],
         ];
 
-        return isset($operation)? $functions[$operation] : $functions;
+        return isset($operation) && isset($functions[$operation]) ? (
+            isset($function) && isset($functions[$operation][$function]) ? $functions[$operation][$function] : $functions[$operation]
+        ) : $functions;
+    }
+
+    public function getCurrentFunction()
+    {
+        return $this->getFunctionsList($this->operation, $this->function);
+    }
+
+    public function initReportCondition()
+    {
+        if(!$this->report) return;
+        $all_conditions = ArrayHelper::index($this->report->getAvailableProps(),'attribute');
+        $this->_config = isset($this->attribute_name) && isset($all_conditions[$this->attribute_name]) ? $all_conditions[$this->attribute_name] : NULL;
     }
 
     public function init()
     {
         parent::init();
-        
+//        $this->initReportCondition();
+        if(!isset($this->operation)) $this->operation = 'select';
     }
 
     public function afterFind()
     {
         parent::afterFind();
-        
+        $this->initReportCondition();
     }
 
     /**
@@ -113,8 +178,12 @@ class ReportsConditions extends \yii\db\ActiveRecord
         return $this->hasOne(Reports::className(), ['id' => 'report_id']);
     }
 
-    public function setEnabled($flag)
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getConfig()
     {
-        $this->_enabled = $flag;
+        return $this->_config;
     }
+
 }

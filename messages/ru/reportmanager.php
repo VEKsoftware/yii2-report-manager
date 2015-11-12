@@ -20,6 +20,10 @@ return [
     'Save' => 'Сохранить',
     'Add Condition' => 'Добавить условие',
 
+    // functions
+    'Select...' => 'Выберите значение...',
+    'Count' => 'Посчитать',
+
     // reportmanager\models\Reports
     'Wrong class' => 'Ошибочный класс данных',
     'Description' => 'Описание',
