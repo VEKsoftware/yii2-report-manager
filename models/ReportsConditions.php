@@ -12,8 +12,11 @@ use yii\helpers\ArrayHelper;
  * @property integer $id
  * @property integer $report_id
  * @property string $attribute_name
+ * @property string $col_label For SELECT operation only. The label of column for the report
  * @property string $operation
  * @property string $function
+ * @property string $param
+ * @property string $plan
  *
  * @property Reports $report
  */
@@ -147,7 +150,10 @@ class ReportsConditions extends \yii\db\ActiveRecord
 
     public function getCurrentFunction()
     {
-        return $this->getFunctionsList($this->operation, $this->function);
+        if(!isset($this->operation) || !isset($this->function)) return NULL;
+        $func_list = self::getFunctionsList($this->operation);
+        if(!is_array($func_list)) return NULL;
+        return isset($func_list[$this->function]) ? $func_list[$this->function] : NULL;
     }
 
     public function initReportCondition()
@@ -200,14 +206,28 @@ class ReportsConditions extends \yii\db\ActiveRecord
      *
      * Apply current condition will be applied to a query using this function.
      *
-     * @param \yii\db\ActiveQuery &$query The query object which current condition must be applied to
+     * @param \yii\db\ActiveQuery $query The query object which current condition must be applied to
+     * @param integer $index The index of this condition. It will be used for alias formation
+//     * @param \reportmanager\ReportManagerInterface $model An object of the class related to the report. We use it to add a property from SELECT statement.
      */
-    public function prepareQuery(&$query)
+    public function prepareQuery($query, $index)
     {
+        $field = $this->currentFunction && $this->currentFunction['func'] ?
+                call_user_func($this->currentFunction['func'],$this->attribute_name,$this->param) : $this->attribute_name;
         switch($this->operation) {
             case 'select':
-//                $alias
-                $query->addSelect([$alias => $this->attribute_name]);
+                // Here I need to add property to the target class accroding to alias
+                $alias = "dynamic_attributes_$index";
+                $query->addSelect([$alias => $field]);
+                break;
+            case 'where':
+                $query->andWhere($field);
+                break;
+            case 'group':
+                $query->addGroupBy($field);
+                break;
+            case 'order':
+                $query->addOrderBy($field);
                 break;
         }
     }

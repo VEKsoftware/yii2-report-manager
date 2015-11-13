@@ -25,7 +25,8 @@ use reportmanager\models\ReportsConditions;
         <?php if(isset($model->currentFunction) && isset($model->currentFunction['param'])): ?>
 
             <?php if(isset($model->config['values']) && is_array($model->config['values'])): ?>
-                <?= $form->field($model, "[$index]param")->dropDownList($model->config['values'], ['prompt' => Yii::t('reportmanager','Select...')]) ?>
+                <?= $form->field($model, "[$index]param")->dropDownList($model->config['values'],
+                    ['prompt' => Yii::t('reportmanager','Select...'),'multiple' => true]) ?>
             <?php else: ?>
                 <?= $form->field($model, "[$index]param")->textInput() ?>
             <?php endif ?>

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use reportmanager\models\ClassSearch;
 
 /* @var $this yii\web\View */
 /* @var $model reportmanager\models\Reports */
@@ -33,4 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+//        'showHeader' => false,
+//        'rowOptions' => function($model, $key, $index, $grid) {
+//            return ['data-index' => $index];
+//        },
+        'columns' => array_merge([
+            ['class' => 'yii\grid\SerialColumn'],
+        ],ClassSearch::$dynamic_attributes),
+    ]) ?>
 </div>

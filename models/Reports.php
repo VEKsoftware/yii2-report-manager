@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 
 use reportmanager\ReportManagerInterface;
 use reportmanager\models\ReportsConditions;
+use reportmanager\models\ClassSearch;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -143,8 +144,12 @@ class Reports extends \yii\db\ActiveRecord
 
     public function generateReport()
     {
-        if(!is_object($this->_model_class) || ! $this->_model_class instanceof ModelReportInterface) {
-            throw new \yii\base\InvalidParamException('The classes for ReportManager must implement interface of ReportManagerInterface class');
+        if(!is_object($this->_model_class)) {
+            throw new \yii\base\InvalidParamException('Report::$_model_class must be an object');
+        }
+
+        if(! $this->_model_class instanceof ReportManagerInterface) {
+            throw new \yii\base\InvalidParamException('Class '.$this->_model_class->className().' for ReportManager must implement interface of ReportManagerInterface class');
         }
 
         $dataProvider = $this->_model_class->search(NULL);
@@ -154,7 +159,11 @@ class Reports extends \yii\db\ActiveRecord
 
         $query = $dataProvider->query;
 
+
         // Remove all select statements from initial query to prepare for the next cycle
+//        $query->select($query_class::primaryKey());
+        $query_class = $query->modelClass;
+//        $query->select($query_class::tableName().'.*');
         $query->select([]);
 
         foreach($this->reportsConditions as $index => $cond) {
@@ -162,6 +171,13 @@ class Reports extends \yii\db\ActiveRecord
             $cond->prepareQuery($query,$index);
         }
 
+        ClassSearch::$table_name = $query_class::tableName();
+        ClassSearch::$dynamic_attributes = array_keys($query->select);
+//        var_dump(ClassSearch::$dynamic_attributes);die();
+//        ClassSearch::$classPrimaryKey = $query_class::primaryKey();
+        $sql = $query->createCommand()->rawSql;
+        $dataProvider->query=ClassSearch::findBySql($sql);
+//        var_dump($query_class::primaryKey()); die();
         return $dataProvider;
     }
 }

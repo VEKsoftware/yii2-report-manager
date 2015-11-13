@@ -101,8 +101,13 @@ class ReportManagerController extends Controller
      */
     public function actionView($id)
     {
+        $report = $this->findModel($id);
+
+        $dataProvider = $report->generateReport();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $report,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
