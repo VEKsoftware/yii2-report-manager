@@ -138,16 +138,41 @@ class ReportManagerController extends Controller
     public function actionUpdate($id)
     {
         $report = $this->findModel($id);
+        $success = $report->load(Yii::$app->request->post()) && $report->save() && NULL !== Yii::$app->request->post('save-report');
 
-        if($report->load(Yii::$app->request->post()) && $report->save()) {
+        if(NULL !== Yii::$app->request->post('ReportsConditions')) {
+            $cond_models = ReportsConditions::createConditions(Yii::$app->request->post('ReportsConditions', []), $report->id);
+            if(ReportsConditions::loadMultiple($cond_models,Yii::$app->request->post()) && ReportsConditions::validateMultiple($cond_models)) {
+                // Delete here the conditions which are not in $_POST
+                foreach($cond_models as $cond_model) {
+                    $cond_model->save();
+                }
+            } else {
+                $success = false;
+            }
+        } else {
+            $cond_models = $report->reportsConditions;
+        }
+
+        if($success) {
             return $this->redirect(['view', 'id' => $report->id]);
         }
 
-        $condDataProvider = new ActiveDataProvider([
-            'query' => ReportsConditions::find()->where(['report_id' => $report->id]),
-            'sort' => ['defaultOrder' => ['order' => SORT_ASC]],
+        if(NULL !== Yii::$app->request->post('add-condition')) {
+            $cond_models[] = new ReportsConditions(['report_id' => $report->id]);
+        } elseif(NULL !== Yii::$app->request->post('delete')) {
+            $cond_models = array_filter($cond_models,function($v) {
+                if($v->id == Yii::$app->request->post('delete')){
+                    $v->delete();
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        $condDataProvider = new ArrayDataProvider([
+            'allModels' => $cond_models,
         ]);
-        $conditions = $report->reportsConditions;
 
         return $this->render('update', [
             'report' => $report,

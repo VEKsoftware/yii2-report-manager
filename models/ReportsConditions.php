@@ -102,6 +102,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'col_label' => Yii::t('reportmanager', 'Column Label'),
             'operation' => Yii::t('reportmanager', 'Operation'),
             'function' => Yii::t('reportmanager', 'Function on Attr.'),
+            'order' => Yii::t('reportmanager', 'Index'),
         ];
     }
 
@@ -110,11 +111,13 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $conditions = [];
         $ids = array_filter(ArrayHelper::getColumn($cond_array,'id'));
         $cond = ArrayHelper::index(ReportsConditions::find()->where(['and', ['id' => $ids], ['report_id' => $report_id]])->with('report')->all(),'id');
-        foreach($cond_array as $cond_params) {
+        foreach($cond_array as $k => $cond_params) {
             if($cond_params['id'] && isset($cond[$cond_params['id']])) {
-                $conditions[] = $cond[$cond_params['id']];
+                $cond_item = $cond[$cond_params['id']];
+                $cond_item->order = $k;
+                $conditions[] = $cond_item;
             } else {
-                $conditions[] = new self(['report_id' => $report_id]);
+                $conditions[] = new self(['report_id' => $report_id, 'order' => $k]);
             }
         }
         return $conditions;
@@ -128,6 +131,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'group' => Yii::t('reportmanager','Grouping'),
             'order' => Yii::t('reportmanager','Order'),
         ];
+    }
+
+    public function getAttributeLabel()
+    {
+        return $this->config['label'];
     }
 
     public static function getFunctionsList($operation = NULL, $function = NULL)
@@ -172,8 +180,51 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 ],
             ],
             'where' => [
+                'not null' => [
+                    'func' => function($attribute, $param) {
+                        return "[[$attribute]] IS NOT NULL";
+                    },
+                    'label' => Yii::t('reportmanager','Not Empty'),
+                    'param' => NULL,
+                ],
+                'year' => [
+                    'func' => function($attribute, $param) {
+                        return "Year([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Year'),
+                    'param' => NULL,
+                ],
+                'month' => [
+                    'func' => function($attribute, $param) {
+                        return "Month([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Month'),
+                    'param' => NULL,
+                ],
+                'in' => [
+                    'func' => function($attribute, $param) {
+                        return "[[$attribute]] IN ('".implode("','",ArrayHelper::htmlEncode($param))."')";
+                    },
+                    'label' => Yii::t('reportmanager', 'Among Values'),
+                    'param' => 'required',
+                    'paramType' => 'multiple',
+                ],
             ],
             'group' => [
+                'year' => [
+                    'func' => function($attribute, $param) {
+                        return "Year([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Year'),
+                    'param' => NULL,
+                ],
+                'month' => [
+                    'func' => function($attribute, $param) {
+                        return "Month([[$attribute]])";
+                    },
+                    'label' => Yii::t('reportmanager','Month'),
+                    'param' => NULL,
+                ],
             ],
             'order' => [
             ],
@@ -202,7 +253,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function init()
     {
         parent::init();
-//        $this->initReportCondition();
         if(!isset($this->operation)) $this->operation = 'select';
     }
 
@@ -229,17 +279,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
         return $this->_config;
     }
 
-/*
-    public function getValue()
-    {
-        return unserialize($this->param);
-    }
-
-    public function setValue($val)
-    {
-        $this->param = serialize($val);
-    }
-*/
     public function validateValues($attribute, $param)
     {
         $value = $this->$attribute;
