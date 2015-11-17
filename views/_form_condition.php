@@ -18,17 +18,24 @@ use reportmanager\models\ReportsConditions;
     <?php if(isset($model->operation)): ?>
 
         <?= $form->field($model, "[$index]function")->dropDownList(
-            array_map(function($v){ if(!isset($v['label'])) { var_dump($v);die(); }; return $v['label']; },ReportsConditions::getFunctionsList($model->operation))
-            , ['prompt' => Yii::t('reportmanager','Select...')]
+            array_map(function($v){ if(!isset($v['label'])) { var_dump($v);die(); }; return $v['label']; },
+                ReportsConditions::getFunctionsList($model->operation)
+            ),
+            [
+                'prompt' => Yii::t('reportmanager','Select...'),
+            ]
         ) ?>
 
         <?php if(isset($model->currentFunction) && isset($model->currentFunction['param'])): ?>
 
             <?php if(isset($model->config['values']) && is_array($model->config['values'])): ?>
-                <?= $form->field($model, "[$index]param")->dropDownList($model->config['values'],
-                    ['prompt' => Yii::t('reportmanager','Select...'),'multiple' => true]) ?>
+                <?= $form->field($model, "[$index]value")->dropDownList($model->config['values'],
+                    [
+                        'prompt' => Yii::t('reportmanager','Select...'),
+                        'multiple' => true,
+                    ]) ?>
             <?php else: ?>
-                <?= $form->field($model, "[$index]param")->textInput() ?>
+                <?= $form->field($model, "[$index]value")->textInput() ?>
             <?php endif ?>
 
         <?php endif /* $model->currentFunction */?>

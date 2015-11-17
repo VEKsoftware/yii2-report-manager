@@ -23,6 +23,7 @@ use yii\helpers\ArrayHelper;
 class ReportsConditions extends \yii\db\ActiveRecord
 {
     private $_config;
+    public $value;
 
     /**
      * @inheritdoc
@@ -41,18 +42,50 @@ class ReportsConditions extends \yii\db\ActiveRecord
             [['report_id', 'attribute_name', 'operation'], 'required'],
             [['report_id'], 'integer'],
             [['operation'], 'string', 'max' => 20],
-            [['attribute_name', 'function','param','plan'], 'string', 'max' => 255],
+            [['attribute_name', 'function','plan'], 'string', 'max' => 255],
 
             [['attribute_name'],function(){ $this->initReportCondition(); return true;}],
 
             // should be called after attribute_name
             // This validator checks for param is to be required field
-            [['param'],function($attribute,$param){
-                    if(isset($this->currentFunction) && isset($this->currentFunction['param']) && $this->currentFunction['param'] === 'required'){
-                        return isset($this->$attribute);
-                    }
+            [['value'],'required', 'when' => function($model){
+                    return isset($model->currentFunction)
+                        && isset($model->currentFunction['param'])
+                        && $model->currentFunction['param'] === 'required'
+                    ;
                     return true;
-                }, 'skipOnEmpty' => false, 'message' => Yii::t('reportmanager','{attribute} is required.')],
+                },
+            ],
+
+            [['value'], 'validateValue'],
+
+/*
+            [['value'],
+                'each',
+                'rule' => [$this->config['type']],
+                'when' => function($model,$attribute){
+                    return isset($model->currentFunction)
+                        && isset($model->currentFunction['paramType'])
+                        && $model->currentFunction['paramType'] === 'multiple'
+                    ;
+                },
+            ],
+            [['value'], 'each', 'rule' => [$this->config['type']], 'when' => function($model,$attribute){
+                    return isset($model->currentFunction)
+                        && isset($model->currentFunction['paramType'])
+                        && $model->currentFunction['paramType'] === 'multiple'
+                    ;
+                },
+            ],
+            [['value'], 'string', 'max' => 128, 'when' => function($model,$attribute){
+                    return isset($model->currentFunction)
+                        && isset($model->currentFunction['paramType'])
+                        && $model->currentFunction['paramType'] === 'string'
+                    ;
+                },
+            ],
+*/
+
         ];
     }
 
@@ -101,10 +134,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'select' => [
                 'count' => [
                     'func' => function($attribute,$param) {
-                        return $param ? "COUNT(IF([[$attribute]]=:param,1,NULL))" : 'COUNT(*)';
+                        return is_array($param) && count($param)>0 ? "COUNT(IF([[$attribute]] IN (:param),1,NULL))" : 'COUNT(*)';
                     },
                     'label' => Yii::t('reportmanager','Count'),
                     'param' => 'optional',
+                    'paramType' => 'multiple',
                 ],
                 'max' => [
                     'func' => function($attribute,$param) {
@@ -161,6 +195,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         if(!$this->report) return;
         $all_conditions = ArrayHelper::index($this->report->getAvailableProps(),'attribute');
         $this->_config = isset($this->attribute_name) && isset($all_conditions[$this->attribute_name]) ? $all_conditions[$this->attribute_name] : NULL;
+        if($this->param) $this->value = unserialize($this->param);
     }
 
     public function init()
@@ -202,6 +237,88 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $this->param = serialize($val);
     }
 
+    public function validateValues($attribute, $param)
+    {
+        $value = $this->$attribute;
+
+        // If paramType is set and multiple we expect an array
+        if(isset($this->currentFunction)
+                && isset($this->currentFunction['paramType'])
+                && $this->currentFunction['paramType'] === 'multiple'
+        ) {
+            if(!is_array($value)) {
+                $this->addError($attribute, Yii::t('Parameter must be an array. Check for option "multiple" in config of ReportManager'));
+                return false;
+            }
+
+            foreach ($value as $k => $v) {
+                if (! $v) unset($value[$k]);
+                if(! $this->validateValue($attribute, $v)) return false;
+            }
+            return true;
+        } else {
+            // Value is not an array
+            return $this->validateValue($attribute, $value);
+        }
+    }
+
+    public function validateValue($attribute, $val)
+    {
+        switch($this->config['type']) {
+        case 'integer':
+            if (! is_int($val)) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be integer'));
+                return false;
+            }
+            break;
+        case 'numeric':
+            if (! is_numeric($val)) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be numeric'));
+                return false;
+            }
+            break;
+        case 'string':
+            if (! is_int($val)) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be string'));
+                return false;
+            }
+            break;
+        case 'in':
+            if (! isset($this->config['value']) || ! is_array($this->config['value']) || ! in_array($val, $this->config['value'])) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} is not within declared values'));
+                return false;
+            }
+            break;
+        case 'date':
+            if (isset(Yii::$app->params['dateFormat']) && ! \DateTime::createFromformat(Yii::$app->params['dateFormat'],$val)) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date of format {format}',['format' => Yii::$app->params['dateFormat']]));
+                return false;
+            } elseif (! \DateTime($val)) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date'));
+                return false;
+            }
+            break;
+        case 'date range':
+            $dates = split(' - ',$val);
+            if (count($dates) !== 2) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must contain two date separated by " - "'));
+                return false;
+            } elseif (isset(Yii::$app->params['dateFormat']) && ! (
+                \DateTime::createFromformat(Yii::$app->params['dateFormat'],$dates[0]) &&
+                \DateTime::createFromformat(Yii::$app->params['dateFormat'],$dates[1]) )
+            ) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date of format {format}',['format' => Yii::$app->params['dateFormat']]));
+                return false;
+            } elseif (! \DateTime($dates[0]) || ! \DateTime($dates[1])) {
+                $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date'));
+                return false;
+            }
+            break;
+        }
+        return true;
+    }
+
+
     /**
      *
      * Apply current condition will be applied to a query using this function.
@@ -232,4 +349,9 @@ class ReportsConditions extends \yii\db\ActiveRecord
         }
     }
 
+    public function beforeSave($insert)
+    {
+        // We need to serialize value into param attribute
+        $this->param = serialize($this->value);
+    }
 }

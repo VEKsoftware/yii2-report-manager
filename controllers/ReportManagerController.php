@@ -72,7 +72,6 @@ class ReportManagerController extends Controller
         }
 
         if(ReportsConditions::loadMultiple($models,Yii::$app->request->post()) && ReportsConditions::validateMultiple($models)) {
-            // Delete here the conditions which are not in $_POST
             foreach($models as $model) {
                 $model->save();
             }
