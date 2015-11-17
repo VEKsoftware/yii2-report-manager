@@ -43,6 +43,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             [['report_id'], 'integer'],
             [['operation'], 'string', 'max' => 20],
             [['attribute_name', 'function','plan'], 'string', 'max' => 255],
+            [['col_label'], 'string', 'max' => 128 ],
 
             [['attribute_name'],function(){ $this->initReportCondition(); return true;}],
 
@@ -57,8 +58,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 },
             ],
 
-            [['value'], 'safe'],
-//            [['value'], 'validateValues'],
+            [['value'], 'validateValues'],
 
 /*
             [['value'],
@@ -99,6 +99,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'id' => Yii::t('reportmanager', 'ID'),
             'report_id' => Yii::t('reportmanager', 'Report'),
             'attribute_name' => Yii::t('reportmanager', 'Attribute Name'),
+            'col_label' => Yii::t('reportmanager', 'Column Label'),
             'operation' => Yii::t('reportmanager', 'Operation'),
             'function' => Yii::t('reportmanager', 'Function on Attr.'),
         ];
@@ -134,8 +135,8 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $functions = [
             'select' => [
                 'count' => [
-                    'func' => function($attribute,$param) {
-                        return is_array($param) && count($param)>0 ? "COUNT(IF([[$attribute]] IN (:param),1,NULL))" : 'COUNT(*)';
+                    'func' => function($attribute, $par_label, $param) {
+                        return is_array($param) && count($param)>0 ? "COUNT(IF([[$attribute]] IN ($par_label),1,NULL))" : 'COUNT(*)';
                     },
                     'label' => Yii::t('reportmanager','Count'),
                     'param' => 'optional',
@@ -335,21 +336,21 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function prepareQuery($query, $index)
     {
         $field = $this->currentFunction && $this->currentFunction['func'] ?
-                call_user_func($this->currentFunction['func'],$this->attribute_name,$this->param) : $this->attribute_name;
+                call_user_func($this->currentFunction['func'],$this->attribute_name, ':param'.$index, $this->value) : $this->attribute_name;
         switch($this->operation) {
             case 'select':
                 // Here I need to add property to the target class accroding to alias
                 $alias = "dynamic_attributes_$index";
-                $query->addSelect([$alias => $field]);
+                $query->addSelect([$alias => $field])->addParams([':param'.$index => $this->value]);
                 break;
             case 'where':
-                $query->andWhere($field);
+                $query->andWhere($field)->addParams([':param'.$index => $this->value]);
                 break;
             case 'group':
-                $query->addGroupBy($field);
+                $query->addGroupBy($field)->addParams([':param'.$index => $this->value]);
                 break;
             case 'order':
-                $query->addOrderBy($field);
+                $query->addOrderBy($field)->addParams([':param'.$index => $this->value]);
                 break;
         }
     }

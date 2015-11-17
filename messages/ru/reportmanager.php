@@ -19,6 +19,7 @@ return [
     'Delete' => 'Удалить',
     'Save' => 'Сохранить',
     'Add Condition' => 'Добавить условие',
+    'Column Label' => 'Название колонки',
 
     // functions
     'Select...' => 'Выберите значение...',

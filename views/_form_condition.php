@@ -11,6 +11,10 @@ use reportmanager\models\ReportsConditions;
 
     <?= $form->field($model, "[$index]report_id",['template' => '{input}', 'options' => ['tag' => 'span', 'class' => '']])->hiddenInput() ?>
 
+    <?php if($model->operation === 'select'): ?>
+    <?= $form->field($model, "[$index]col_label")->textInput() ?>
+    <?php endif ?>
+
     <?= $form->field($model, "[$index]attribute_name")->dropDownList(ArrayHelper::map($model->report->availableProps,'attribute','label')) ?>
 
     <?= $form->field($model, "[$index]operation")->dropDownList(ReportsConditions::getOperationsList()) ?>
