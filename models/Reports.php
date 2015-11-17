@@ -159,25 +159,23 @@ class Reports extends \yii\db\ActiveRecord
 
         $query = $dataProvider->query;
 
-
         // Remove all select statements from initial query to prepare for the next cycle
-//        $query->select($query_class::primaryKey());
-        $query_class = $query->modelClass;
-//        $query->select($query_class::tableName().'.*');
         $query->select([]);
 
+        $columns = [];
         foreach($this->reportsConditions as $index => $cond) {
             // !!!!! May be dataProvider shoud be sent instead of query ?????
-            $cond->prepareQuery($query,$index);
+            $columns += $cond->prepareQuery($query,$index);
         }
 
+        $query_class = $query->modelClass;
         ClassSearch::$table_name = $query_class::tableName();
-        ClassSearch::$dynamic_attributes = array_keys($query->select);
-//        var_dump(ClassSearch::$dynamic_attributes);die();
-//        ClassSearch::$classPrimaryKey = $query_class::primaryKey();
+        ClassSearch::$dynamic_attributes = array_keys($columns);
+        ClassSearch::$dynamic_labels = $columns;
+
         $sql = $query->createCommand()->rawSql;
         $dataProvider->query=ClassSearch::findBySql($sql);
-//        var_dump($query_class::primaryKey()); die();
+
         return $dataProvider;
     }
 }

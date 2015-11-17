@@ -23,7 +23,7 @@ use yii\data\ActiveDataProvider;
 class ClassSearch extends \yii\db\ActiveRecord
 {
     public static $dynamic_attributes;
-//    public $primaryKey = NULL;
+    public static $dynamic_labels;
     public static $table_name;
 
     /**
@@ -50,7 +50,7 @@ class ClassSearch extends \yii\db\ActiveRecord
 //        return [
 //            'id' => Yii::t('reportmanager', 'ID'),
 //        ];
-        return parent::attributeLabels();
+        return self::$dynamic_labels + parent::attributeLabels();
     }
 
 }

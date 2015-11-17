@@ -135,36 +135,36 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $functions = [
             'select' => [
                 'count' => [
-                    'func' => function($attribute, $par_label, $param) {
-                        return is_array($param) && count($param)>0 ? "COUNT(IF([[$attribute]] IN ($par_label),1,NULL))" : 'COUNT(*)';
+                    'func' => function($attribute, $param) {
+                        return is_array($param) && count($param)>0 ? "COUNT(IF([[$attribute]] IN ('".implode("','",ArrayHelper::htmlEncode($param))."'),1,NULL))" : 'COUNT(*)';
                     },
                     'label' => Yii::t('reportmanager','Count'),
                     'param' => 'optional',
                     'paramType' => 'multiple',
                 ],
                 'max' => [
-                    'func' => function($attribute,$param) {
+                    'func' => function($attribute, $param) {
                         return "MAX([[$attribute]])";
                     },
                     'label' => Yii::t('reportmanager','Max'),
                     'param' => NULL,
                 ],
                 'min' => [
-                    'func' => function($attribute,$param) {
+                    'func' => function($attribute, $param) {
                         return "MIN([[$attribute]])";
                     },
                     'label' => Yii::t('reportmanager','Min'),
                     'param' => NULL,
                 ],
                 'year' => [
-                    'func' => function($attribute,$param) {
+                    'func' => function($attribute, $param) {
                         return "Year([[$attribute]])";
                     },
                     'label' => Yii::t('reportmanager','Year'),
                     'param' => NULL,
                 ],
                 'month' => [
-                    'func' => function($attribute,$param) {
+                    'func' => function($attribute, $param) {
                         return "Month([[$attribute]])";
                     },
                     'label' => Yii::t('reportmanager','Month'),
@@ -336,22 +336,23 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function prepareQuery($query, $index)
     {
         $field = $this->currentFunction && $this->currentFunction['func'] ?
-                call_user_func($this->currentFunction['func'],$this->attribute_name, ':param'.$index, $this->value) : $this->attribute_name;
+                call_user_func($this->currentFunction['func'],$this->attribute_name, $this->value) : $this->attribute_name;
         switch($this->operation) {
             case 'select':
                 // Here I need to add property to the target class accroding to alias
-                $alias = "dynamic_attributes_$index";
-                $query->addSelect([$alias => $field])->addParams([':param'.$index => $this->value]);
-                break;
+                //$alias = "dynamic_attributes_$index";
+                $alias = "da_$index";
+                $query->addSelect([$alias => $field]);
+                return [$alias => $this->col_label];
             case 'where':
-                $query->andWhere($field)->addParams([':param'.$index => $this->value]);
-                break;
+                $query->andWhere($field);
+                return [];
             case 'group':
-                $query->addGroupBy($field)->addParams([':param'.$index => $this->value]);
-                break;
+                $query->addGroupBy($field);
+                return [];
             case 'order':
-                $query->addOrderBy($field)->addParams([':param'.$index => $this->value]);
-                break;
+                $query->addOrderBy($field);
+                return [];
         }
     }
 
