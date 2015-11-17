@@ -61,6 +61,7 @@ class ReportManagerController extends Controller
      * Lists all Conditions for the Reports models.
      * @return mixed
      */
+/*
     public function actionConditions($report_id, $add = NULL)
     {
         $report = $this->findModel($report_id);
@@ -92,7 +93,7 @@ class ReportManagerController extends Controller
             'models' => $models,
         ]);
     }
-
+*/
     /**
      * Displays a single Reports model.
      * @param integer $id

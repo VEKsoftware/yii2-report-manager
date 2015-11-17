@@ -57,7 +57,8 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 },
             ],
 
-            [['value'], 'validateValue'],
+            [['value'], 'safe'],
+//            [['value'], 'validateValues'],
 
 /*
             [['value'],
@@ -195,7 +196,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
         if(!$this->report) return;
         $all_conditions = ArrayHelper::index($this->report->getAvailableProps(),'attribute');
         $this->_config = isset($this->attribute_name) && isset($all_conditions[$this->attribute_name]) ? $all_conditions[$this->attribute_name] : NULL;
-        if($this->param) $this->value = unserialize($this->param);
     }
 
     public function init()
@@ -209,6 +209,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
     {
         parent::afterFind();
         $this->initReportCondition();
+        if($this->param) $this->value = unserialize($this->param);
     }
 
     /**
@@ -227,6 +228,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         return $this->_config;
     }
 
+/*
     public function getValue()
     {
         return unserialize($this->param);
@@ -236,7 +238,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
     {
         $this->param = serialize($val);
     }
-
+*/
     public function validateValues($attribute, $param)
     {
         $value = $this->$attribute;
@@ -252,7 +254,10 @@ class ReportsConditions extends \yii\db\ActiveRecord
             }
 
             foreach ($value as $k => $v) {
-                if (! $v) unset($value[$k]);
+                if (! $v) {
+                    unset($value[$k]);
+                    continue;
+                }
                 if(! $this->validateValue($attribute, $v)) return false;
             }
             return true;
@@ -284,7 +289,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             }
             break;
         case 'in':
-            if (! isset($this->config['value']) || ! is_array($this->config['value']) || ! in_array($val, $this->config['value'])) {
+            if (! isset($this->config['values']) || ! is_array($this->config['values']) || ! array_key_exists($val, $this->config['values'])) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} is not within declared values'));
                 return false;
             }
@@ -353,5 +358,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
     {
         // We need to serialize value into param attribute
         $this->param = serialize($this->value);
+        return parent::beforeSave($insert);
     }
 }
