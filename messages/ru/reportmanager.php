@@ -4,6 +4,7 @@
  *
  */
 return [
+    'Conditions' => 'Условия',
     'Report Name' => 'Название отчета',
     'Data Class' => 'Класс данных',
     'Options' => 'Опции',
@@ -20,6 +21,10 @@ return [
     'Save' => 'Сохранить',
     'Add Condition' => 'Добавить условие',
     'Column Label' => 'Название колонки',
+    'Column' => 'Колонка',
+    'Condition' => 'Условие',
+    'Grouping' => 'Группировка',
+    'Order' => 'Упорядочение',
 
     // functions
     'Select...' => 'Выберите значение...',

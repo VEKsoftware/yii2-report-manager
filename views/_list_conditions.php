@@ -8,9 +8,11 @@ use reportmanager\models\ReportsConditions;
 
 ?>
 
+<?= Html::a(Yii::t('reportmanager', 'Add Condition'),['condition','report_id' => $model->id], ['class' => 'btn btn-primary', 'name' => 'add-condition']) ?>
+
 <?= ListView::widget([
     'dataProvider' => $condDataProvider,
-    'itemOptions' => ['class' => 'item'],
+    'itemOptions' => ['class' => 'list'],
 //    'itemView' => '_view_condition',
 //*
     'itemView' => function ($model, $key, $index, $widget) {
@@ -30,13 +32,13 @@ use reportmanager\models\ReportsConditions;
         }
         return Html::a(''
             .$model->operationsList[$model->operation]
-            .' '
-            .$model->attributeLabel
+            .': '
+            .$model->conditionLabel
             .' '
             .(is_array($func) ? $func['label'] : '')
             .' '
             .($param ? $param : '')
-        ,['condition','id' => $model->id]);
+        ,['condition','report_id' => $model->report->id,'id' => $model->id]);
     },
 //*/
 ]) ?>

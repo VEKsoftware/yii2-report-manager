@@ -23,6 +23,7 @@ class ReportManagerController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'delete-condition' => ['post'],
                 ],
             ],
         ];
@@ -144,15 +145,58 @@ class ReportManagerController extends Controller
         }
 
         $condDataProvider = new ActiveDataProvider([
-            'query' => ReportsConditions::find()->where(['report_id' => $report->id]),
+            'query' => ReportsConditions::find()->where(['report_id' => $report->id])->with('report'),
             'sort' => ['defaultOrder' => ['order' => SORT_ASC]],
         ]);
-        $conditions = $report->reportsConditions;
 
         return $this->render('update', [
             'report' => $report,
             'condDataProvider' => $condDataProvider,
         ]);
+    }
+
+    /**
+     * Work on conditions
+
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionCondition($report_id, $id=NULL)
+    {
+        if($id) {
+            $condition = $this->findCondition($id);
+            $report = $condition->report;
+        } else {
+            $report = $this->findModel($report_id);
+            $condition = new ReportsConditions(['report_id' => $report->id]);
+        }
+
+        $condition->load(Yii::$app->request->post()) && $condition->save();
+
+        $condDataProvider = new ActiveDataProvider([
+            'query' => ReportsConditions::find()->where(['report_id' => $report->id])->with('report'),
+            'sort' => ['defaultOrder' => ['order' => SORT_ASC]],
+        ]);
+
+        return $this->render('update', [
+            'report' => $report,
+            'condDataProvider' => $condDataProvider,
+            'condition' => $condition,
+        ]);
+    }
+
+    /**
+     * Deletes an existing ReportsConditions model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDeleteCondition($id)
+    {
+        $condition = $this->findCondition($id);
+        $report_id = $condition->report_id;
+        $condition->delete();
+
+        return $this->redirect(['update','id' => $report_id]);
     }
 
     /**
@@ -178,6 +222,15 @@ class ReportManagerController extends Controller
     protected function findModel($id)
     {
         if (($model = Reports::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findCondition($id)
+    {
+        if (($model = ReportsConditions::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

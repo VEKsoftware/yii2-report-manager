@@ -25,21 +25,36 @@ $this->params['breadcrumbs'][] = Yii::t('reportmanager', 'Update');
 <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
 
   <div class="row">
-  <div class="col-sm-4">
-
+  <div class="col-sm-6">
+    <?php if(!isset($condition)): ?>
     <?= $this->render('_form', [
         'model' => $report,
         'form' => $form,
     ]) ?>
-  </div>
-
-  <div class="col-sm-8">
+    <?php else: ?>
+    <h3><?=Yii::t('reportmanager','Conditions')?></h3>
     <?= $this->render('_list_conditions', [
         'model' => $report,
         'condDataProvider' => $condDataProvider,
         'form' => $form,
     ]) ?>
+    <?php endif ?>
+  </div>
 
+  <div class="col-sm-6">
+    <?php if(!isset($condition)): ?>
+    <h3><?=Yii::t('reportmanager','Conditions')?></h3>
+    <?= $this->render('_list_conditions', [
+        'model' => $report,
+        'condDataProvider' => $condDataProvider,
+        'form' => $form,
+    ]) ?>
+    <?php else: ?>
+    <?= $this->render('_form_condition', [
+        'model' => $condition,
+        'form' => $form,
+    ]) ?>
+    <?php endif ?>
   </div>
   </div>
 <?php $this->registerJs('

@@ -126,14 +126,14 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public static function getOperationsList()
     {
         return [
-            'select' => Yii::t('reportmanager','Select'),
+            'select' => Yii::t('reportmanager','Column'),
             'where' => Yii::t('reportmanager','Condition'),
             'group' => Yii::t('reportmanager','Grouping'),
             'order' => Yii::t('reportmanager','Order'),
         ];
     }
 
-    public function getAttributeLabel()
+    public function getConditionLabel()
     {
         return $this->config['label'];
     }
