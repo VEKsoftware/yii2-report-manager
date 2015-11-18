@@ -51,7 +51,7 @@ use reportmanager\models\ReportsConditions;
         'data' => [
             'pjax' => true,
         ],
-        'name' => 'save-report',
+        'name' => 'save',
     ]) ?>
 
     <?= Html::a(Yii::t('reportmanager', 'Delete'), ['delete-condition','id' =>$model->id ],[

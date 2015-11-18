@@ -15,7 +15,7 @@ use reportmanager\models\ReportsConditions;
     'itemOptions' => ['class' => 'list'],
 //    'itemView' => '_view_condition',
 //*
-    'itemView' => function ($model, $key, $index, $widget) {
+    'itemView' => function ($model, $key, $index, $widget) use($condition){
 //        $func = ReportsConditions::getFunctionsList($model->operation,$model->function);
         $func = $model->currentFunction;
         $param = NULL;
@@ -30,7 +30,7 @@ use reportmanager\models\ReportsConditions;
                 $param = $model->value;
             }
         }
-        return Html::a(''
+        $title = ''
             .$model->operationsList[$model->operation]
             .': '
             .$model->conditionLabel
@@ -38,7 +38,12 @@ use reportmanager\models\ReportsConditions;
             .(is_array($func) ? $func['label'] : '')
             .' '
             .($param ? $param : '')
-        ,['condition','report_id' => $model->report->id,'id' => $model->id]);
+        ;
+
+        return isset($condition) && $condition->id == $model->id ?
+            Html::tag('span',$title) :
+            Html::a($title, ['condition','report_id' => $model->report->id,'id' => $model->id])
+        ;
     },
 //*/
 ]) ?>

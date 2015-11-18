@@ -25,10 +25,14 @@ return [
     'Condition' => 'Условие',
     'Grouping' => 'Группировка',
     'Order' => 'Упорядочение',
+    'Among Values' => 'Среди',
 
     // functions
     'Select...' => 'Выберите значение...',
     'Count' => 'Посчитать',
+    'Year' => 'Год',
+    'Month' => 'Месяц',
+    'Not Empty' => 'Не пустое',
 
     // reportmanager\models\Reports
     'Wrong class' => 'Ошибочный класс данных',

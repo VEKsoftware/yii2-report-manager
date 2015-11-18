@@ -171,7 +171,9 @@ class ReportManagerController extends Controller
             $condition = new ReportsConditions(['report_id' => $report->id]);
         }
 
-        $condition->load(Yii::$app->request->post()) && $condition->save();
+        if($condition->load(Yii::$app->request->post()) && $condition->save() && NULL !== Yii::$app->request->post('save')) {
+            return $this->redirect(['update', 'id' => $report->id]);
+        }
 
         $condDataProvider = new ActiveDataProvider([
             'query' => ReportsConditions::find()->where(['report_id' => $report->id])->with('report'),
