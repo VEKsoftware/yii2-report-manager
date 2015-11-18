@@ -39,6 +39,9 @@ use reportmanager\models\ReportsConditions;
                         'multiple' => true,
                     ]) ?>
             <?php else: ?>
+                <pre>
+                <?php var_dump($_POST) ?>
+                </pre>
                 <?= $form->field($model, "value")->textInput() ?>
             <?php endif ?>
 

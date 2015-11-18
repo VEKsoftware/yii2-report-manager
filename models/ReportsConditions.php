@@ -144,7 +144,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'select' => [
                 'count' => [
                     'func' => function($attribute, $param) {
-                        return is_array($param) && count($param)>0 ? "COUNT(IF([[$attribute]] IN ('".implode("','",ArrayHelper::htmlEncode($param))."'),1,NULL))" : 'COUNT(*)';
+                        return is_array($param) && count($param)>0 ?
+                            "COUNT(IF([[$attribute]] IN ("
+                                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
+                                ."),1,NULL))"
+                            : 'COUNT(*)';
                     },
                     'label' => Yii::t('reportmanager','Count'),
                     'param' => 'optional',
@@ -178,6 +182,14 @@ class ReportsConditions extends \yii\db\ActiveRecord
                     'label' => Yii::t('reportmanager','Month'),
                     'param' => NULL,
                 ],
+                'date' => [
+                    'func' => function($attribute, $param) {
+                        return $param ? "DATE_FORMAT([[$attribute]],".\Yii::$app->db->quoteValue($param).")" : "[[$attribute]]";
+                    },
+                    'label' => Yii::t('reportmanager','Date'),
+                    'param' => 'optional',
+                    'paramType' => 'string',
+                ],
             ],
             'where' => [
                 'not null' => [
@@ -203,7 +215,9 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 ],
                 'in' => [
                     'func' => function($attribute, $param) {
-                        return "[[$attribute]] IN ('".implode("','",ArrayHelper::htmlEncode($param))."')";
+                        return "[[$attribute]] IN ("
+                                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
+                                .")";
                     },
                     'label' => Yii::t('reportmanager', 'Among Values'),
                     'param' => 'required',
@@ -309,7 +323,9 @@ class ReportsConditions extends \yii\db\ActiveRecord
 
     public function validateValue($attribute, $val)
     {
-        switch($this->config['type']) {
+        if (! isset($this->currentFunction['paramType'])) return false;
+
+        switch($this->currentFunction['paramType']) {
         case 'integer':
             if (! is_int($val)) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be integer'));
@@ -323,7 +339,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             }
             break;
         case 'string':
-            if (! is_int($val)) {
+            if (! is_string($val)) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be string'));
                 return false;
             }
@@ -338,7 +354,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             if (isset(Yii::$app->params['dateFormat']) && ! \DateTime::createFromformat(Yii::$app->params['dateFormat'],$val)) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date of format {format}',['format' => Yii::$app->params['dateFormat']]));
                 return false;
-            } elseif (! \DateTime($val)) {
+            } elseif (! new \DateTime($val)) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date'));
                 return false;
             }
@@ -354,7 +370,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             ) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date of format {format}',['format' => Yii::$app->params['dateFormat']]));
                 return false;
-            } elseif (! \DateTime($dates[0]) || ! \DateTime($dates[1])) {
+            } elseif (! new \DateTime($dates[0]) || ! new \DateTime($dates[1])) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be date'));
                 return false;
             }
