@@ -142,7 +142,7 @@ class Reports extends \yii\db\ActiveRecord
         }
     }
 
-    public function generateReport()
+    public function generateReport($params = NULL)
     {
         if(!is_object($this->_model_class)) {
             throw new \yii\base\InvalidParamException('Report::$_model_class must be an object');
@@ -152,7 +152,7 @@ class Reports extends \yii\db\ActiveRecord
             throw new \yii\base\InvalidParamException('Class '.$this->_model_class->className().' for ReportManager must implement interface of ReportManagerInterface class');
         }
 
-        $dataProvider = $this->_model_class->search(NULL);
+        $dataProvider = $this->_model_class->search($params);
         if(! $dataProvider instanceof ActiveDataProvider) {
             throw new \yii\base\InvalidParamException('The ReportManagerInterface::search() method must return ActiveDataProvider object');
         }
@@ -170,7 +170,7 @@ class Reports extends \yii\db\ActiveRecord
 
         $query_class = $query->modelClass;
         ClassSearch::$table_name = $query_class::tableName();
-        ClassSearch::$dynamic_attributes = array_keys($columns);
+//        ClassSearch::$dynamic_attributes = array_keys($columns);
         ClassSearch::$dynamic_labels = $columns;
 
         $sql = $query->createCommand()->rawSql;

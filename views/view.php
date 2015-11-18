@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 use yii\grid\GridView;
 use reportmanager\models\ClassSearch;
 
@@ -27,13 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'name',
-            'description:ntext',
-        ],
-    ]) ?>
+    <div class="reports-view-description">
+<pre>
+<?=Html::encode($model->description)?>
+</pre>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -42,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            return ['data-index' => $index];
 //        },
         'columns' => array_merge([
-            ['class' => 'yii\grid\SerialColumn'],
-        ],ClassSearch::$dynamic_attributes),
+//            ['class' => 'yii\grid\SerialColumn'],
+        ],array_keys(ClassSearch::$dynamic_labels)),
     ]) ?>
 </div>

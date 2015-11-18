@@ -22,9 +22,9 @@ use yii\data\ActiveDataProvider;
  */
 class ClassSearch extends \yii\db\ActiveRecord
 {
-    public static $dynamic_attributes;
     public static $dynamic_labels;
     public static $table_name;
+    private $_custom_attributes;
 
     /**
      * @inheritdoc
@@ -34,12 +34,18 @@ class ClassSearch extends \yii\db\ActiveRecord
         return self::$table_name;
     }
 
+    public static function populateRecord($record, $row)
+    {
+        $record->_custom_attributes = array_keys($row);
+        parent::populateRecord($record, $row);
+    }
+
     /**
      * @inheritdoc
      */
     public function attributes()
     {
-        return array_merge(parent::attributes(),self::$dynamic_attributes);
+        return array_merge(parent::attributes(),$this->_custom_attributes);
     }
 
     /**
