@@ -106,7 +106,8 @@ class Reports extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id'])
             ->with('report')
-            ->orderBy(['operation' => SORT_ASC,'attribute_name' => SORT_ASC,'function' => SORT_ASC]);
+            ->orderBy(['operation' => SORT_ASC,'attribute_name' => SORT_ASC,'function' => SORT_ASC])
+            ->inverseOf('report');
     }
 
     /**

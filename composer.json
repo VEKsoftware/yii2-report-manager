@@ -19,8 +19,5 @@
         "psr-4": {
             "reportmanager\\": ""
         }
-    },
-    "extra": {
-        "bootstrap": "reportmanager\\base\\Init"
     }
 }
