@@ -5,11 +5,15 @@ namespace reportmanager\controllers;
 use Yii;
 use reportmanager\models\Reports;
 use reportmanager\models\ReportsConditions;
+use reportmanager\ReportManagerAccessInterface;
+
 use yii\data\ArrayDataProvider;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use yii\base\ErrorException;
 
 /**
  * ReportManagerController implements the CRUD actions for Reports model.
@@ -48,8 +52,19 @@ class ReportManagerController extends Controller
      */
     public function actionIndex()
     {
+//        $access = new $this->module->accessClass;
+        if(isset($access) && ! $access->isAllowed('reportmanager.index')) {
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Operation is not allowed!'));
+        }
+
+        if($this->module->reportModelClass) {
+            $repClass = $this->module->reportModelClass;
+        } else {
+            throw new ErrorException('You need to initialize reportModelClass variable in $config["model"] by a child of \reportmanager\models\Reports');
+        }
+
         $repDataProvider = new ActiveDataProvider([
-            'query' => Reports::find(),
+            'query' => $repClass::findReports(),
             'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
         ]);
 
@@ -223,7 +238,13 @@ class ReportManagerController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Reports::findOne($id)) !== null) {
+        if($this->module->reportModelClass) {
+            $repClass = $this->module->reportModelClass;
+        } else {
+            throw new ErrorException('You need to initialize reportModelClass variable in $config["model"] by a child of \reportmanager\models\Reports');
+        }
+
+        if (($model = $repClass::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

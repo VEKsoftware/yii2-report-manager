@@ -8,6 +8,7 @@ class ReportManager extends \yii\base\Module
 {
     public $controllerNamespace = 'reportmanager\controllers';
     public $_report_classes;
+    public $reportModelClass;
 
     public function init()
     {

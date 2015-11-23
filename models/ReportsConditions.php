@@ -282,7 +282,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
      */
     public function getReport()
     {
-        return $this->hasOne(Reports::className(), ['id' => 'report_id']);
+        return $this->hasOne(Yii::$app->controller->module->reportModelClass, ['id' => 'report_id']);
     }
 
     /**

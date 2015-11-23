@@ -21,7 +21,7 @@ use yii\data\ActiveDataProvider;
  *
  * @property ReportsConditions[] $reportsConditions
  */
-class Reports extends \yii\db\ActiveRecord
+abstract class Reports extends \yii\db\ActiveRecord
 {
     public static $classes_list;
     public $conditions;
@@ -73,6 +73,15 @@ class Reports extends \yii\db\ActiveRecord
             if(! $this->_model_class instanceof ReportManagerInterface)
                 throw new \yii\base\InvalidParamException('The classes for ReportManager must implement interface of ReportManagerInterface class');
         }
+    }
+
+    /**
+     * This method is used to list all reports in the index page.
+     * You can overload this method in order to restrict access for the users to some reports.
+     */
+    public static function findReports()
+    {
+        return static::find();
     }
 
     /**
@@ -143,6 +152,13 @@ class Reports extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * Get creator of the report
+     *
+     * @return yii\db\ActiveQuery
+     */
+    public abstract function getCreator();
+
     public function generateReport($params = NULL)
     {
         if(!is_object($this->_model_class)) {
@@ -171,12 +187,17 @@ class Reports extends \yii\db\ActiveRecord
 
         $query_class = $query->modelClass;
         ClassSearch::$table_name = $query_class::tableName();
-//        ClassSearch::$dynamic_attributes = array_keys($columns);
         ClassSearch::$dynamic_labels = $columns;
 
         $sql = $query->createCommand()->rawSql;
         $dataProvider->query=ClassSearch::findBySql($sql);
 
         return $dataProvider;
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->creator_id = Yii::$app->user->id;
+        return true;
     }
 }
