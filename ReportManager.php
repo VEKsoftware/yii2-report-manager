@@ -15,6 +15,7 @@ class ReportManager extends \yii\base\Module
         parent::init();
         $this->registerTranslations();
         Reports::$classes_list = $this->_report_classes;
+        Reports::$module = $this;
     }
 
     public function setReportClasses($rc)

@@ -25,6 +25,7 @@ abstract class Reports extends \yii\db\ActiveRecord
 {
     public static $classes_list;
     public $conditions;
+    public static $module;
 
     private $_config;
     private $_model_class;
@@ -73,6 +74,15 @@ abstract class Reports extends \yii\db\ActiveRecord
             if(! $this->_model_class instanceof ReportManagerInterface)
                 throw new \yii\base\InvalidParamException('The classes for ReportManager must implement interface of ReportManagerInterface class');
         }
+    }
+
+    public static function instantiate($row)
+    {
+//        $rc = new \ReflectionClass();
+        if(! self::$module->reportModelClass) {
+            throw new \yii\base\ErrorException('You need to specify reportModelClass variable in model ReportClass configuration.');
+        }
+        return new self::$module->reportModelClass;
     }
 
     /**

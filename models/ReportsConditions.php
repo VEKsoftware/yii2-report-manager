@@ -5,6 +5,7 @@ namespace reportmanager\models;
 use Yii;
 
 use yii\helpers\ArrayHelper;
+use yii\base\ErrorException;
 
 /**
  * This is the model class for table "{{%reports_conditions}}".
@@ -24,6 +25,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
 {
     private $_config;
     public $value;
+    public $reportModelClass;
 
     /**
      * @inheritdoc
@@ -282,7 +284,12 @@ class ReportsConditions extends \yii\db\ActiveRecord
      */
     public function getReport()
     {
-        return $this->hasOne(Yii::$app->controller->module->reportModelClass, ['id' => 'report_id']);
+//        return $this->hasOne(Yii::$app->controller->module->reportModelClass, ['id' => 'report_id']);
+        return $this->hasOne(Reports::className(), ['id' => 'report_id']);
+        if(! $this->reportModelClass) {
+            throw new ErrorException('ReportsConditions::reportModelClass property must by initialized by the child of abstract model \reportmanager\Reports');
+        }
+        return $this->hasOne($this->reportModelClass, ['id' => 'report_id']);
     }
 
     /**
