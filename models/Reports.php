@@ -69,6 +69,13 @@ abstract class Reports extends \yii\db\ActiveRecord
         ];
     }
 
+    public function transactions()
+    {
+        return [
+            'default' => self::OP_DELETE,
+        ];
+    }
+
     /**
      * Get creator of the report
      *
@@ -236,5 +243,14 @@ abstract class Reports extends \yii\db\ActiveRecord
     {
         $this->creator_id = Yii::$app->user->id;
         return true;
+    }
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            return ReportsConditions::deleteAll(['report_id' => $this->id]);
+        } else {
+            return false;
+        }
     }
 }
