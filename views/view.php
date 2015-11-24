@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use reportmanager\models\ClassSearch;
 
@@ -27,9 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <div class="reports-view-description">
-<pre>
-<?=Html::encode($model->description)?>
-</pre>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <label><?= Yii::t('reportmanager','Creator') ?>:</label>
+            <?=Html::encode(ArrayHelper::getValue($model,'creator.name'))?>
+        </div>
+        <div class="col-sm-6">
+            <label><?= Yii::t('reportmanager','Access Group') ?>:</label>
+            <?=Html::encode(ArrayHelper::getValue($model->getGroupList(),$model->group))?>
+        </div>
+    </div>
+<label><?=Yii::t('reportmanager','Description')?>:</label>
+<div>
+<?=Yii::$app->formatter->asNText($model->description)?>
+</div>
     </div>
 
     <?= GridView::widget([

@@ -26,6 +26,8 @@ return [
     'Grouping' => 'Группировка',
     'Order' => 'Упорядочение',
     'Among Values' => 'Среди',
+    'Creator' => 'Создатель',
+    'Access Group' => 'Группа доступа',
 
     // functions
     'Select...' => 'Выберите значение...',
