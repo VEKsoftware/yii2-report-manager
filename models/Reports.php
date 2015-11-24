@@ -44,9 +44,10 @@ abstract class Reports extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'class_name'], 'required'],
+            [['name', 'class_name','group_id'], 'required'],
             [['options', 'template','description'], 'string'],
             [['name'], 'string', 'max' => 128],
+            [['group_id'],'integer'],
             [['class_name'], 'string', 'max' => 255],
             [['class_name'], 'in', 'range' => self::$classes_list, 'message' => Yii::t('reportmanager','Wrong class')],
         ];
@@ -64,8 +65,30 @@ abstract class Reports extends \yii\db\ActiveRecord
             'class_name' => Yii::t('reportmanager', 'Data Class'),
             'options' => Yii::t('reportmanager', 'Options'),
             'template' => Yii::t('reportmanager', 'Report Template'),
+            'creator.name' => Yii::t('reportmanager','Creator'),
         ];
     }
+
+    /**
+     * Get creator of the report
+     *
+     * @return yii\db\ActiveQuery
+     */
+    public abstract function getCreator();
+
+    /**
+     * Get user group having access to this report
+     *
+     * @return yii\db\ActiveQuery
+     */
+    public abstract function getGroup();
+
+    /**
+     * Get list of all available groups
+     *
+     * @return array ['value' => 'label']
+     */
+    public static abstract function getGroupList();
 
     protected function initClass()
     {
@@ -78,11 +101,22 @@ abstract class Reports extends \yii\db\ActiveRecord
 
     public static function instantiate($row)
     {
-//        $rc = new \ReflectionClass();
-        if(! self::$module->reportModelClass) {
+        if (get_called_class() !== 'reportmanager\models\Reports') {
+            return new static;
+        }
+
+        $class = static::$module->reportModelClass;
+
+        if (! $class) {
             throw new \yii\base\ErrorException('You need to specify reportModelClass variable in model ReportClass configuration.');
         }
-        return new self::$module->reportModelClass;
+
+        $rc = new \ReflectionClass($class);
+        if (! $rc->isSubClassOf('\reportmanager\models\Reports')) {
+            throw new \yii\base\ErrorException('The reportModelClass must be a child of \reportmanager\models\Reports.');
+        }
+
+        return $class::instantiate($row);
     }
 
     /**
@@ -161,13 +195,6 @@ abstract class Reports extends \yii\db\ActiveRecord
             return NULL;
         }
     }
-
-    /**
-     * Get creator of the report
-     *
-     * @return yii\db\ActiveQuery
-     */
-    public abstract function getCreator();
 
     public function generateReport($params = NULL)
     {

@@ -24,10 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name',
                 'format' => 'html',
                 'value' => function($model) {
-                    return Html::a(Html::encode($model->name),['view', 'id'  => $model->id]).Html::tag('p',Yii::$app->formatter->asNtext($model->description));
+                    return Html::a(Html::encode($model->name),['view', 'id' => $model->id]).Html::tag('p',Yii::$app->formatter->asNtext($model->description));
                 },
             ],
-
+            'creator.name',
+/*
+            [
+                'attribute' => 'creator_id',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->name,[])
+                }
+            ]
+*/
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
