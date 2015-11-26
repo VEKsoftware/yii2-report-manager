@@ -41,19 +41,8 @@ class ReportManagerController extends Controller
      */
     public function actionIndex()
     {
-//        $access = new $this->module->accessClass;
-        if(isset($access) && ! $access->isAllowed('reportmanager.index')) {
-            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Operation is not allowed!'));
-        }
-
-        if($this->module->reportModelClass) {
-            $repClass = $this->module->reportModelClass;
-        } else {
-            throw new ErrorException('You need to initialize reportModelClass variable in $config["model"] by a child of \reportmanager\models\Reports');
-        }
-
         $repDataProvider = new ActiveDataProvider([
-            'query' => $repClass::findReports(),
+            'query' => Reports::findReports(),
             'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
         ]);
 
@@ -70,6 +59,9 @@ class ReportManagerController extends Controller
     public function actionView($id)
     {
         $report = $this->findModel($id);
+        if(! $report->isAllowed('view')) {
+            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
 
         $dataProvider = $report->generateReport();
 
@@ -87,6 +79,10 @@ class ReportManagerController extends Controller
     public function actionCreate()
     {
         $model = Reports::instantiate([]);
+
+        if(! $report->isAllowed('create')) {
+            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
@@ -106,6 +102,10 @@ class ReportManagerController extends Controller
     public function actionUpdate($id)
     {
         $report = $this->findModel($id);
+
+        if(! $report->isAllowed('update')) {
+            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
 
         if($report->load(Yii::$app->request->post()) && $report->save()) {
             return $this->redirect(['view', 'id' => $report->id]);
@@ -138,6 +138,10 @@ class ReportManagerController extends Controller
             $condition = new ReportsConditions(['report_id' => $report->id]);
         }
 
+        if(! $report->isAllowed('update')) {
+            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
+
         if($condition->load(Yii::$app->request->post()) && $condition->save() && NULL !== Yii::$app->request->post('save')) {
             return $this->redirect(['update', 'id' => $report->id]);
         }
@@ -162,6 +166,12 @@ class ReportManagerController extends Controller
     public function actionDeleteCondition($id)
     {
         $condition = $this->findCondition($id);
+        $report = $condition->report;
+
+        if(! $report->isAllowed('update')) {
+            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
+
         $report_id = $condition->report_id;
         $condition->delete();
 
@@ -176,7 +186,13 @@ class ReportManagerController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $report = $this->findModel($id);
+
+        if(! $report->isAllowed('delete')) {
+            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
+
+        $report->delete();
 
         return $this->redirect(['index']);
     }

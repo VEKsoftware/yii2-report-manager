@@ -113,6 +113,16 @@ abstract class Reports extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     *
+     * Instantiate the model class.
+     *
+     * The children of \reportmanager\models\Reports may overload this class
+     * to use multiple childer. Otherwise the class from reportModelClass parameter will be use for creation
+     * of the object,
+     *
+     * @return \reportmanager\models\Reports
+     */
     public static function instantiate($row)
     {
         if (get_called_class() !== 'reportmanager\models\Reports') {
@@ -136,10 +146,27 @@ abstract class Reports extends \yii\db\ActiveRecord
     /**
      * This method is used to list all reports in the index page.
      * You can overload this method in order to restrict access for the users to some reports.
+     *
+     * @return \yii\db\ActiveQuery
      */
     public static function findReports()
     {
-        return static::find();
+        if (get_called_class() !== 'reportmanager\models\Reports') {
+            return static::find();
+        }
+
+        $class = static::$module->reportModelClass;
+
+        if (! $class) {
+            throw new \yii\base\ErrorException('You need to specify reportModelClass variable in model ReportClass configuration.');
+        }
+
+        $rc = new \ReflectionClass($class);
+        if (! $rc->isSubClassOf('\reportmanager\models\Reports')) {
+            throw new \yii\base\ErrorException('The reportModelClass must be a child of \reportmanager\models\Reports.');
+        }
+
+        return $class::findReports();
     }
 
     /**
@@ -260,4 +287,5 @@ abstract class Reports extends \yii\db\ActiveRecord
             return false;
         }
     }
+
 }
