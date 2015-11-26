@@ -143,7 +143,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public static function getFunctionsList($operation = NULL, $function = NULL)
     {
         $functions = [
-            'select' => [
                 'count' => [
                     'func' => function($attribute, $param) {
                         return is_array($param) && count($param)>0 ?
@@ -192,27 +191,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
                     'param' => 'optional',
                     'paramType' => 'string',
                 ],
-            ],
-            'where' => [
                 'not null' => [
                     'func' => function($attribute, $param) {
                         return "[[$attribute]] IS NOT NULL";
                     },
                     'label' => Yii::t('reportmanager','Not Empty'),
-                    'param' => NULL,
-                ],
-                'year' => [
-                    'func' => function($attribute, $param) {
-                        return "Year([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Year'),
-                    'param' => NULL,
-                ],
-                'month' => [
-                    'func' => function($attribute, $param) {
-                        return "Month([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Month'),
                     'param' => NULL,
                 ],
                 'in' => [
@@ -225,30 +208,15 @@ class ReportsConditions extends \yii\db\ActiveRecord
                     'param' => 'required',
                     'paramType' => 'multiple',
                 ],
-            ],
-            'group' => [
-                'year' => [
-                    'func' => function($attribute, $param) {
-                        return "Year([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Year'),
-                    'param' => NULL,
-                ],
-                'month' => [
-                    'func' => function($attribute, $param) {
-                        return "Month([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Month'),
-                    'param' => NULL,
-                ],
-            ],
-            'order' => [
-            ],
         ];
 
+        return isset($function) && isset($functions[$function]) ? $functions[$function] : $functions;
+
+/*
         return isset($operation) && isset($functions[$operation]) ? (
             isset($function) && isset($functions[$operation][$function]) ? $functions[$operation][$function] : $functions[$operation]
         ) : $functions;
+*/
     }
 
     public function getCurrentFunction()
