@@ -91,6 +91,13 @@ abstract class Reports extends \yii\db\ActiveRecord
     public abstract function getGroup();
 
     /**
+     * Check wheather the access to the report is allowed to current user
+     *
+     * @return boolean
+     */
+    public abstract function isAllowed($operation);
+
+    /**
      * Get list of all available groups
      *
      * @return array ['value' => 'label']

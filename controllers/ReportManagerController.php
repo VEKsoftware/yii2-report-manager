@@ -20,6 +20,8 @@ use yii\base\ErrorException;
  */
 class ReportManagerController extends Controller
 {
+    public $defaultAction = 'index';
+
     public function behaviors()
     {
         return [
@@ -32,19 +34,6 @@ class ReportManagerController extends Controller
             ],
         ];
     }
-
-    public function getViewPath()
-    {
-        return Yii::getAlias('@reportmanager/views');
-    }
-
-/*
-    public function beforeAction($action)
-    {
-//        $this->module->registerTranslation();
-        parent::beforeAction($action);
-    }
-*/
 
     /**
      * Lists all Reports models.
@@ -74,43 +63,6 @@ class ReportManagerController extends Controller
     }
 
     /**
-     * Lists all Conditions for the Reports models.
-     * @return mixed
-     */
-/*
-    public function actionConditions($report_id, $add = NULL)
-    {
-        $report = $this->findModel($report_id);
-        $post = Yii::$app->request->post();
-        if(NULL !== Yii::$app->request->post('ReportsConditions')) {
-            $models = ReportsConditions::createConditions(Yii::$app->request->post('ReportsConditions', []), $report->id);
-        } else {
-            $models = $report->reportsConditions;
-        }
-
-        if(ReportsConditions::loadMultiple($models,Yii::$app->request->post()) && ReportsConditions::validateMultiple($models)) {
-            foreach($models as $model) {
-                $model->save();
-            }
-        }
-
-        if(isset($add)) {
-            $models[] = new ReportsConditions(['report_id' => $report->id]);
-        }
-
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => $models,
-//            'sort' => ['defaultOrder' => ['attribute_name' => SORT_ASC]],
-        ]);
-
-        return $this->render('conditions', [
-            'dataProvider' => $dataProvider,
-            'report' => $report,
-            'models' => $models,
-        ]);
-    }
-*/
-    /**
      * Displays a single Reports model.
      * @param integer $id
      * @return mixed
@@ -134,7 +86,7 @@ class ReportManagerController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Reports();
+        $model = Reports::instantiate([]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
