@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -24,10 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name',
                 'format' => 'html',
                 'value' => function($model) {
-                    return Html::a(Html::encode($model->name),['view', 'id' => $model->id]).Html::tag('p',Yii::$app->formatter->asNtext($model->description));
+                    return $model->isAllowed('view') ?
+                        Html::a(Html::encode($model->name),['view', 'id' => $model->id]).Html::tag('p',Yii::$app->formatter->asNtext($model->description)) :
+                        Html::encode($model->name);
                 },
             ],
             'creator.name',
+            'group.name',
 /*
             [
                 'attribute' => 'creator_id',
@@ -37,7 +41,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ]
 */
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'buttons'=>[
+                    'update' => function ($url, $model, $key) {
+                        return $model->isAllowed('update') ?
+                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update','id'=>$model->id], ['title' => Yii::t('yii', 'Update')])
+                            :'';
+                    },
+                    'view' => function ($url, $model, $key) {
+                        return $model->isAllowed('view') ?
+                            Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view','id'=>$model->id], ['title' => Yii::t('yii', 'View')])
+                            :'';
+                    },
+                    'delete' => function ($url, $model, $key) {
+                        return $model->isAllowed('delete') ?
+                            Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete','id'=>$model->id], ['title' => Yii::t('yii', 'Delete')])
+                            :'';
+                    },
+                        ],
+                ],
         ],
     ]); ?>
 

@@ -28,6 +28,7 @@ return [
     'Among Values' => 'Среди',
     'Creator' => 'Создатель',
     'Access Group' => 'Группа доступа',
+    'Group' => 'Группа',
 
     // functions
     'Select...' => 'Выберите значение...',

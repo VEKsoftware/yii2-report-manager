@@ -66,6 +66,7 @@ abstract class Reports extends \yii\db\ActiveRecord
             'options' => Yii::t('reportmanager', 'Options'),
             'template' => Yii::t('reportmanager', 'Report Template'),
             'creator.name' => Yii::t('reportmanager','Creator'),
+            'group.name' => Yii::t('reportmanager','Group'),
         ];
     }
 
