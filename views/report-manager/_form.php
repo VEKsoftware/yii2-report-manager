@@ -21,6 +21,8 @@ use reportmanager\models\Reports;
 
         <?= $form->field($model, 'group_id')->dropDownList(ArrayHelper::map($model->getGroupList(),'id','name')) ?>
 
+        <?= $form->field($model, 'show')->radioList(Reports::listShowOptions()) ?>
+
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
 <div class="form-group">

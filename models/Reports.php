@@ -26,6 +26,7 @@ abstract class Reports extends \yii\db\ActiveRecord
     public static $classes_list;
     public $conditions;
     public static $module;
+    public $show;
 
     private $_config;
     private $_model_class;
@@ -44,9 +45,11 @@ abstract class Reports extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'class_name','group_id'], 'required'],
+            [['name', 'class_name','group_id','show'], 'required'],
             [['options', 'template','description'], 'string'],
             [['name'], 'string', 'max' => 128],
+            [['show'], 'string', 'max' => 12],
+            [['show'],'in','range' => ['table','graph','both']],
             [['group_id'],'integer'],
             [['class_name'], 'string', 'max' => 255],
             [['class_name'], 'in', 'range' => self::$classes_list, 'message' => Yii::t('reportmanager','Wrong class')],
@@ -67,6 +70,15 @@ abstract class Reports extends \yii\db\ActiveRecord
             'template' => Yii::t('reportmanager', 'Report Template'),
             'creator.name' => Yii::t('reportmanager','Creator'),
             'group.name' => Yii::t('reportmanager','Group'),
+        ];
+    }
+
+    public static function listShowOptions()
+    {
+        return [
+            'table' => Yii::t('reportmanager','Table'),
+            'graph' => Yii::t('reportmanager','Graph'),
+            'both'  => Yii::t('reportmanager','Both'),
         ];
     }
 
@@ -190,6 +202,8 @@ abstract class Reports extends \yii\db\ActiveRecord
     {
         parent::afterFind();
         $this->initClass();
+        $options = unserialize($this->options);
+        if(isset($options['show'])) $this->show = $options['show'];
     }
 
     /**
@@ -277,6 +291,9 @@ abstract class Reports extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         $this->creator_id = Yii::$app->user->id;
+        $options = unserialize($this->options);
+        $options['show'] = $this->show;
+        $this->options = serialize($options);
         return true;
     }
 
