@@ -29,6 +29,11 @@ return [
     'Creator' => 'Создатель',
     'Access Group' => 'Группа доступа',
     'Group' => 'Группа',
+    'Display as' => 'Отображать как',
+    'Table' => 'Таблицу',
+    'Graph' => 'График',
+    'Both' => 'Оба',
+    'Field for X axis' => 'Поле для оси X',
 
     // functions
     'Select...' => 'Выберите значение...',

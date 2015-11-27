@@ -25,6 +25,7 @@ class ClassSearch extends \yii\db\ActiveRecord
     public static $dynamic_labels;
     public static $table_name;
     private $_custom_attributes;
+    public static $report;
 
     /**
      * @inheritdoc
@@ -49,6 +50,16 @@ class ClassSearch extends \yii\db\ActiveRecord
     }
 
     /**
+     * Show list of attibutes which are set in the report as ReportsConditions
+     *
+     * @return array Returns an array of strings
+     */
+    public function customAttributes()
+    {
+        return $this->_custom_attributes;
+    }
+
+    /**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -56,7 +67,7 @@ class ClassSearch extends \yii\db\ActiveRecord
 //        return [
 //            'id' => Yii::t('reportmanager', 'ID'),
 //        ];
-        return self::$dynamic_labels + parent::attributeLabels();
+        return ArrayHelper::map(self::$report->columns,'alias','label') + parent::attributeLabels();
     }
 
 }

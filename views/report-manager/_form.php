@@ -23,6 +23,16 @@ use reportmanager\models\Reports;
 
         <?= $form->field($model, 'show')->radioList(Reports::listShowOptions()) ?>
 
+        <?php if(in_array($model->show,['graph','both'])): ?>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <?= $form->field($model, 'graph_x')->dropDownList(ArrayHelper::map($model->columns,'alias','label')) ?>
+    </div>
+</div>
+
+        <?php endif ?>
+
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
 <div class="form-group">

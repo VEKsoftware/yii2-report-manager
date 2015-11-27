@@ -27,6 +27,7 @@ abstract class Reports extends \yii\db\ActiveRecord
     public $conditions;
     public static $module;
     public $show;
+    public $graph_x;
 
     private $_config;
     private $_model_class;
@@ -50,6 +51,7 @@ abstract class Reports extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 128],
             [['show'], 'string', 'max' => 12],
             [['show'],'in','range' => ['table','graph','both']],
+            [['graph_x'],'in','range' => ArrayHelper::getColumn($this->columns,'alias')],
             [['group_id'],'integer'],
             [['class_name'], 'string', 'max' => 255],
             [['class_name'], 'in', 'range' => self::$classes_list, 'message' => Yii::t('reportmanager','Wrong class')],
@@ -70,6 +72,8 @@ abstract class Reports extends \yii\db\ActiveRecord
             'template' => Yii::t('reportmanager', 'Report Template'),
             'creator.name' => Yii::t('reportmanager','Creator'),
             'group.name' => Yii::t('reportmanager','Group'),
+            'show' => Yii::t('reportmanager','Display as'),
+            'graph_x' => Yii::t('reportmanager','Field for X axis'),
         ];
     }
 
@@ -204,6 +208,7 @@ abstract class Reports extends \yii\db\ActiveRecord
         $this->initClass();
         $options = unserialize($this->options);
         if(isset($options['show'])) $this->show = $options['show'];
+        if(isset($options['graph_x'])) $this->graph_x = $options['graph_x'];
     }
 
     /**
@@ -217,6 +222,11 @@ abstract class Reports extends \yii\db\ActiveRecord
             ->with('report')
             ->orderBy(['operation' => SORT_ASC,'attribute_name' => SORT_ASC,'function' => SORT_ASC])
             ->inverseOf('report');
+    }
+
+    public function getColumns()
+    {
+        return array_filter($this->reportsConditions,function($val){ return $val->alias !== NULL; });
     }
 
     /**
@@ -275,12 +285,13 @@ abstract class Reports extends \yii\db\ActiveRecord
         $columns = [];
         foreach($this->reportsConditions as $index => $cond) {
             // !!!!! May be dataProvider shoud be sent instead of query ?????
-            $columns += $cond->prepareQuery($query,$index);
+            $cond->prepareQuery($query,$index);
         }
 
         $query_class = $query->modelClass;
         ClassSearch::$table_name = $query_class::tableName();
-        ClassSearch::$dynamic_labels = $columns;
+        ClassSearch::$dynamic_labels = $this->columns;
+        ClassSearch::$report = $this;
 
         $sql = $query->createCommand()->rawSql;
         $dataProvider->query=ClassSearch::findBySql($sql);
@@ -293,6 +304,7 @@ abstract class Reports extends \yii\db\ActiveRecord
         $this->creator_id = Yii::$app->user->id;
         $options = unserialize($this->options);
         $options['show'] = $this->show;
+        $options['graph_x'] = $this->graph_x;
         $this->options = serialize($options);
         return true;
     }

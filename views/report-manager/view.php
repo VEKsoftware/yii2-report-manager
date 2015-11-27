@@ -45,14 +45,18 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
     </div>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-//        'showHeader' => false,
-//        'rowOptions' => function($model, $key, $index, $grid) {
-//            return ['data-index' => $index];
-//        },
-        'columns' => array_merge([
-//            ['class' => 'yii\grid\SerialColumn'],
-        ],array_keys(ClassSearch::$dynamic_labels)),
-    ]) ?>
+    <?php if(in_array($model->show,['graph','both'])): ?>
+        <?=$this->render('_view_graph',[
+            'model' => $model,
+            'dataProvider' => $dataProvider,
+        ])?>
+    <?php endif ?>
+
+    <?php if(in_array($model->show,['table','both'])): ?>
+        <?=$this->render('_view_table',[
+            'model' => $model,
+            'dataProvider' => $dataProvider,
+        ])?>
+    <?php endif ?>
+
 </div>

@@ -210,7 +210,10 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 ],
         ];
 
-        return isset($function) && isset($functions[$function]) ? $functions[$function] : $functions;
+        if(isset($function)) {
+            return isset($functions[$function]) ? $functions[$function] : NULL;
+        }
+        return $functions;
 
 /*
         return isset($operation) && isset($functions[$operation]) ? (
@@ -222,9 +225,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
     public function getCurrentFunction()
     {
         if(!isset($this->operation) || !isset($this->function)) return NULL;
-        $func_list = self::getFunctionsList($this->operation);
-        if(!is_array($func_list)) return NULL;
-        return isset($func_list[$this->function]) ? $func_list[$this->function] : NULL;
+        return self::getFunctionsList($this->operation, $this->function);
     }
 
     public function initReportCondition()
@@ -357,6 +358,36 @@ class ReportsConditions extends \yii\db\ActiveRecord
 
     /**
      *
+     * return the column alias to use in SQL
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        if($this->operation === 'select') {
+            return 'da_'.$this->id;
+        } else {
+            return NULL;
+        }
+    }
+
+    /**
+     *
+     * return the column label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        if($this->operation === 'select') {
+            return $this->col_label;
+        } else {
+            return NULL;
+        }
+    }
+
+    /**
+     *
      * Apply current condition will be applied to a query using this function.
      *
      * @param \yii\db\ActiveQuery $query The query object which current condition must be applied to
@@ -371,18 +402,17 @@ class ReportsConditions extends \yii\db\ActiveRecord
             case 'select':
                 // Here I need to add property to the target class accroding to alias
                 //$alias = "dynamic_attributes_$index";
-                $alias = "da_$index";
-                $query->addSelect([$alias => $field]);
-                return [$alias => $this->col_label];
+                $query->addSelect([$this->alias => $field]);
+                break;
             case 'where':
                 $query->andWhere($field);
-                return [];
+                break;
             case 'group':
                 $query->addGroupBy($field);
-                return [];
+                break;
             case 'order':
                 $query->addOrderBy($field);
-                return [];
+                break;
         }
     }
 
