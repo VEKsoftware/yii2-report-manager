@@ -6,6 +6,7 @@ use Yii;
 
 use yii\helpers\ArrayHelper;
 use yii\base\ErrorException;
+use reportmanager\functions\Func;
 
 /**
  * This is the model class for table "{{%reports_conditions}}".
@@ -24,6 +25,7 @@ use yii\base\ErrorException;
 class ReportsConditions extends \yii\db\ActiveRecord
 {
     private $_config;
+    private $_function;
     public $value;
     public $reportModelClass;
 
@@ -185,7 +187,13 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 ],
                 'date' => [
                     'func' => function($attribute, $param) {
-                        return $param ? "DATE_FORMAT([[$attribute]],".\Yii::$app->db->quoteValue($param).")" : "[[$attribute]]";
+                        return "UNIX_TIMESTAMP([[$attribute]])";
+                    },
+                    'render_tab' => function($val,$param) {
+                        $date = new \DateTime;
+                        $date->setTimestamp($val);
+                        $format = $param ? $param : '%Y-%m-%d';
+                        return $date->format($format);
                     },
                     'label' => Yii::t('reportmanager','Date'),
                     'param' => 'optional',
@@ -215,11 +223,17 @@ class ReportsConditions extends \yii\db\ActiveRecord
         }
         return $functions;
 
-/*
-        return isset($operation) && isset($functions[$operation]) ? (
-            isset($function) && isset($functions[$operation][$function]) ? $functions[$operation][$function] : $functions[$operation]
-        ) : $functions;
-*/
+    }
+
+    public function getFunctionObj()
+    {
+        return $this->_function;
+    }
+
+    public function setFunctionObj($func_id)
+    {
+        $this->function = $func_id;
+        $this->_function = Func::instantiate(['condition' => $this]);
     }
 
     public function getCurrentFunction()
@@ -246,6 +260,8 @@ class ReportsConditions extends \yii\db\ActiveRecord
         parent::afterFind();
         $this->initReportCondition();
         if($this->param) $this->value = unserialize($this->param);
+        $this->functionObj = $this->function;
+
     }
 
     /**
@@ -401,7 +417,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
         switch($this->operation) {
             case 'select':
                 // Here I need to add property to the target class accroding to alias
-                //$alias = "dynamic_attributes_$index";
                 $query->addSelect([$this->alias => $field]);
                 break;
             case 'where':
