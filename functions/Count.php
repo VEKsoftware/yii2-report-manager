@@ -43,9 +43,25 @@ class Count extends Func
     /**
      * @inherit
      */
+    public function getType()
+    {
+        return 'integer';
+    }
+
+    /**
+     * @inherit
+     */
     public function getParamType()
     {
         return 'string';
+    }
+
+    /**
+     * @inherit
+     */
+    public function getIsMultiple()
+    {
+        return true;
     }
 
     /**
@@ -62,30 +78,4 @@ class Count extends Func
             : 'COUNT(*)';
     }
 
-    /**
-     * Prepare output string for rendering Table
-     *
-     * @return string
-    public function prepareTable($attribute,$param)
-    {
-        return '[[attribute]]';
-    }
-     */
-
-/*
-    'date' => [
-        'func' => function($attribute, $param) {
-            return "UNIX_TIMESTAMP([[$attribute]])";
-        },
-        'render_tab' => function($val,$param) {
-            $date = new \DateTime;
-            $date->setTimestamp($val);
-            $format = $param ? $param : '%Y-%m-%d';
-            return $date->format($format);
-        },
-        'label' => Yii::t('reportmanager','Date'),
-        'param' => 'optional',
-        'paramType' => 'string',
-    ],
-*/
 }

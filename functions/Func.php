@@ -76,11 +76,25 @@ abstract class Func extends \yii\base\Object
     public abstract function getParamRequired();
 
     /**
+     * Type of output of the function
+     *
+     * @return string One of 'string', 'date', 'integer'
+     */
+    public abstract function getType();
+
+    /**
      * Type of parameter accepted by the function
      *
      * @return string One of 'string', 'date', 'date range'
      */
     public abstract function getParamType();
+
+    /**
+     * Is the parameter to this function is multiple?
+     *
+     * @return string One of 'string', 'date', 'integer'
+     */
+    public abstract function getIsMultiple();
 
     /**
      * Prepare SQL string for ActiveQuery
@@ -109,9 +123,9 @@ abstract class Func extends \yii\base\Object
      *
      * @return string
      */
-    public function prepareGraph()
+    public function prepareGraph($val)
     {
-        return $this->condition->alias;
+        return $val;
     }
 
 }

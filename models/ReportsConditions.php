@@ -54,42 +54,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
             // should be called after attribute_name
             // This validator checks for param is to be required field
             [['value'],'required', 'when' => function($model){
-                    return isset($model->currentFunction)
-                        && isset($model->currentFunction['param'])
-                        && $model->currentFunction['param'] === 'required'
-                    ;
-                    return true;
+                    return $model->functionObj->paramRequired === 'required';
                 },
             ],
 
             [['value'], 'validateValues'],
-
-/*
-            [['value'],
-                'each',
-                'rule' => [$this->config['type']],
-                'when' => function($model,$attribute){
-                    return isset($model->currentFunction)
-                        && isset($model->currentFunction['paramType'])
-                        && $model->currentFunction['paramType'] === 'multiple'
-                    ;
-                },
-            ],
-            [['value'], 'each', 'rule' => [$this->config['type']], 'when' => function($model,$attribute){
-                    return isset($model->currentFunction)
-                        && isset($model->currentFunction['paramType'])
-                        && $model->currentFunction['paramType'] === 'multiple'
-                    ;
-                },
-            ],
-            [['value'], 'string', 'max' => 128, 'when' => function($model,$attribute){
-                    return isset($model->currentFunction)
-                        && isset($model->currentFunction['paramType'])
-                        && $model->currentFunction['paramType'] === 'string'
-                    ;
-                },
-            ],
-*/
 
         ];
     }
@@ -290,10 +259,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $value = $this->$attribute;
 
         // If paramType is set and multiple we expect an array
-        if(isset($this->currentFunction)
-                && isset($this->currentFunction['paramType'])
-                && $this->currentFunction['paramType'] === 'multiple'
-        ) {
+        if($this->functionObj->isMultiple) {
             if(!is_array($value)) {
                 $this->addError($attribute, Yii::t('Parameter must be an array. Check for option "multiple" in config of ReportManager'));
                 return false;

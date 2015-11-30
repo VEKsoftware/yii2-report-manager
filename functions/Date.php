@@ -43,9 +43,25 @@ class Date extends Func
     /**
      * @inherit
      */
+    public function getType()
+    {
+        return 'date';
+    }
+
+    /**
+     * @inherit
+     */
     public function getParamType()
     {
         return 'date';
+    }
+
+    /**
+     * @inherit
+     */
+    public function getIsMultiple()
+    {
+        return false;
     }
 
     /**
@@ -77,20 +93,8 @@ class Date extends Func
         ];
     }
 
-/*
-    'date' => [
-        'func' => function($attribute, $param) {
-            return "UNIX_TIMESTAMP([[$attribute]])";
-        },
-        'render_tab' => function($val,$param) {
-            $date = new \DateTime;
-            $date->setTimestamp($val);
-            $format = $param ? $param : '%Y-%m-%d';
-            return $date->format($format);
-        },
-        'label' => Yii::t('reportmanager','Date'),
-        'param' => 'optional',
-        'paramType' => 'string',
-    ],
-*/
+    public function prepareGraph($val)
+    {
+        return $val*1000;
+    }
 }

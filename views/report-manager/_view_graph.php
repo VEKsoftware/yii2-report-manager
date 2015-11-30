@@ -40,9 +40,9 @@ foreach($columns as $col) {
             $alias_y = $col->alias;
             if(is_object($x_column)) {
                 $alias_x = $x_column->alias;
-                return [$item->$alias_x,$item->$alias_y];
+                return [$x_column->functionObj->prepareGraph($item->$alias_x),$col->functionObj->prepareGraph($item->$alias_y)];
             } else {
-                return [$item->$alias_y];
+                return [$col->functionObj->prepareGraph($item->$alias_y)];
             }
         },$models),
         'lines'  => ['show' => true],
@@ -58,8 +58,7 @@ foreach($columns as $col) {
         'data' => $plot_data,
         'options' => [
             'xaxis' => [
-                'mode' => 'time',
-//                'mode' => NULL,
+                'mode' => $x_column->functionObj->type === 'date' ? 'time' : none,
                 'timeformat' => '%b %Y',
                 'minTickSize' => [1, 'month'],
 //                'monthNames' => $monthNames,

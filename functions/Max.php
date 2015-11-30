@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * This is an abstract class containing definition of ReportsConditions Functions.
  *
  */
-class None extends Func
+class Max extends Func
 {
     /**
      * The parent ReportsConditions object
@@ -21,7 +21,7 @@ class None extends Func
      */
     public function getId()
     {
-        return 'none';
+        return 'max';
     }
 
     /**
@@ -29,7 +29,7 @@ class None extends Func
      */
     public function getLabel()
     {
-        return Yii::t('reportmanager','None');
+        return Yii::t('reportmanager','Max');
     }
 
     /**
