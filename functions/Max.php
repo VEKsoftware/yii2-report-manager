@@ -27,7 +27,7 @@ class Max extends Func
     /**
      * @inherit
      */
-    public function getLabel()
+    public static function getLabel()
     {
         return Yii::t('reportmanager','Max');
     }
@@ -78,5 +78,5 @@ class Max extends Func
                 .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
             ."),1,NULL))"
             : "MAX([[$attribute]])";
-
+    }
 }

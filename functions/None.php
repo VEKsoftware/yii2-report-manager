@@ -27,7 +27,7 @@ class None extends Func
     /**
      * @inherit
      */
-    public function getLabel()
+    public static function getLabel()
     {
         return Yii::t('reportmanager','None');
     }

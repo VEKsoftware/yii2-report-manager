@@ -22,7 +22,7 @@ use reportmanager\models\ReportsConditions;
     <?php if(isset($model->operation)): ?>
 
         <?= $form->field($model, "function")->dropDownList(
-            array_map(function($v){ if(!isset($v['label'])) { var_dump($v);die(); }; return $v['label']; },
+            array_map(function($v){ return $v::getLabel(); },
                 ReportsConditions::getFunctionsList($model->operation)
             ),
             [
@@ -30,7 +30,7 @@ use reportmanager\models\ReportsConditions;
             ]
         ) ?>
 
-        <?php if(isset($model->currentFunction) && isset($model->currentFunction['param'])): ?>
+        <?php if($model->functionObj->paramType): ?>
 
             <?php if(isset($model->config['values']) && is_array($model->config['values'])): ?>
                 <?= $form->field($model, "value")->dropDownList($model->config['values'],
@@ -42,7 +42,7 @@ use reportmanager\models\ReportsConditions;
                 <?= $form->field($model, "value")->textInput() ?>
             <?php endif ?>
 
-        <?php endif /* $model->currentFunction */?>
+        <?php endif /* $model->functionObj->paramType */?>
 
     <?php endif /* $model->operation */?>
 

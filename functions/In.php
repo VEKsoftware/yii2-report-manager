@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * This is an abstract class containing definition of ReportsConditions Functions.
  *
  */
-class Count extends Func
+class In extends Func
 {
     /**
      * The parent ReportsConditions object
@@ -21,7 +21,7 @@ class Count extends Func
      */
     public function getId()
     {
-        return 'count';
+        return 'in';
     }
 
     /**
@@ -29,7 +29,7 @@ class Count extends Func
      */
     public static function getLabel()
     {
-        return Yii::t('reportmanager','Count');
+        return Yii::t('reportmanager','Among Values');
     }
 
     /**
@@ -37,7 +37,7 @@ class Count extends Func
      */
     public function getParamRequired()
     {
-        return 'optional';
+        return 'required';
     }
 
     /**
@@ -73,11 +73,9 @@ class Count extends Func
     {
         $param = $this->condition->value;
         $attribute = $this->condition->attribute_name;
-        return is_array($param) && count($param)>0 ?
-            "COUNT(IF([[$attribute]] IN ("
-                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
-            ."),1,NULL))"
-            : "COUNT([[$attribute]])";
+        return "[[$attribute]] IN ("
+            .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
+        .")";
     }
 
 }

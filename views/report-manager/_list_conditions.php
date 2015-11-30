@@ -16,10 +16,8 @@ use reportmanager\models\ReportsConditions;
 //    'itemView' => '_view_condition',
 //*
     'itemView' => function ($model, $key, $index, $widget) use($condition){
-//        $func = ReportsConditions::getFunctionsList($model->operation,$model->function);
-        $func = $model->currentFunction;
         $param = NULL;
-        if(isset($model->currentFunction) && isset($model->currentFunction['param'])) {
+        if($model->functionObj->paramType) {
             if(is_array($model->value)) {
                 $all_values = $model->config['values'];
                 $values = array_map(function($v) use($all_values){
@@ -35,7 +33,7 @@ use reportmanager\models\ReportsConditions;
             .': '
             .$model->conditionLabel
             .' '
-            .(is_array($func) ? $func['label'] : '')
+            .$model->functionObj->label
             .' '
             .($param ? $param : '')
         ;

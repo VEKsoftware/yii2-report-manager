@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * This is an abstract class containing definition of ReportsConditions Functions.
  *
  */
-class Count extends Func
+class NotNull extends Func
 {
     /**
      * The parent ReportsConditions object
@@ -21,7 +21,7 @@ class Count extends Func
      */
     public function getId()
     {
-        return 'count';
+        return 'not null';
     }
 
     /**
@@ -29,7 +29,7 @@ class Count extends Func
      */
     public static function getLabel()
     {
-        return Yii::t('reportmanager','Count');
+        return Yii::t('reportmanager','Not Null');
     }
 
     /**
@@ -37,7 +37,7 @@ class Count extends Func
      */
     public function getParamRequired()
     {
-        return 'optional';
+        return NULL;
     }
 
     /**
@@ -45,7 +45,7 @@ class Count extends Func
      */
     public function getType()
     {
-        return 'integer';
+        return 'string';
     }
 
     /**
@@ -53,7 +53,7 @@ class Count extends Func
      */
     public function getParamType()
     {
-        return 'string';
+        return NULL;
     }
 
     /**
@@ -61,23 +61,16 @@ class Count extends Func
      */
     public function getIsMultiple()
     {
-        return true;
+        return false;
     }
 
     /**
-     * Prepare SQL string for ActiveQuery
-     *
-     * @return string
+     * @inherit
      */
     public function prepareSql()
     {
-        $param = $this->condition->value;
         $attribute = $this->condition->attribute_name;
-        return is_array($param) && count($param)>0 ?
-            "COUNT(IF([[$attribute]] IN ("
-                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
-            ."),1,NULL))"
-            : "COUNT([[$attribute]])";
+        $param = $this->condition->value;
+        return "[[$attribute]] IS NOT NULL";
     }
-
 }

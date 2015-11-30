@@ -113,79 +113,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
 
     public static function getFunctionsList($operation = NULL, $function = NULL)
     {
-        $functions = [
-                'count' => [
-                    'func' => function($attribute, $param) {
-                        return is_array($param) && count($param)>0 ?
-                            "COUNT(IF([[$attribute]] IN ("
-                                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
-                                ."),1,NULL))"
-                            : 'COUNT(*)';
-                    },
-                    'label' => Yii::t('reportmanager','Count'),
-                    'param' => 'optional',
-                    'paramType' => 'multiple',
-                ],
-                'max' => [
-                    'func' => function($attribute, $param) {
-                        return "MAX([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Max'),
-                    'param' => NULL,
-                ],
-                'min' => [
-                    'func' => function($attribute, $param) {
-                        return "MIN([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Min'),
-                    'param' => NULL,
-                ],
-                'year' => [
-                    'func' => function($attribute, $param) {
-                        return "Year([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Year'),
-                    'param' => NULL,
-                ],
-                'month' => [
-                    'func' => function($attribute, $param) {
-                        return "Month([[$attribute]])";
-                    },
-                    'label' => Yii::t('reportmanager','Month'),
-                    'param' => NULL,
-                ],
-                'date' => [
-                    'func' => function($attribute, $param) {
-                        return "UNIX_TIMESTAMP([[$attribute]])";
-                    },
-                    'render_tab' => function($val,$param) {
-                        $date = new \DateTime;
-                        $date->setTimestamp($val);
-                        $format = $param ? $param : '%Y-%m-%d';
-                        return $date->format($format);
-                    },
-                    'label' => Yii::t('reportmanager','Date'),
-                    'param' => 'optional',
-                    'paramType' => 'string',
-                ],
-                'not null' => [
-                    'func' => function($attribute, $param) {
-                        return "[[$attribute]] IS NOT NULL";
-                    },
-                    'label' => Yii::t('reportmanager','Not Empty'),
-                    'param' => NULL,
-                ],
-                'in' => [
-                    'func' => function($attribute, $param) {
-                        return "[[$attribute]] IN ("
-                                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
-                                .")";
-                    },
-                    'label' => Yii::t('reportmanager', 'Among Values'),
-                    'param' => 'required',
-                    'paramType' => 'multiple',
-                ],
-        ];
+        $functions = Func::listFunctions();
 
         if(isset($function)) {
             return isset($functions[$function]) ? $functions[$function] : NULL;
@@ -203,12 +131,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
     {
         $this->function = $func_id;
         $this->_function = Func::instantiate(['condition' => $this]);
-    }
-
-    public function getCurrentFunction()
-    {
-        if(!isset($this->operation) || !isset($this->function)) return NULL;
-        return self::getFunctionsList($this->operation, $this->function);
     }
 
     public function initReportCondition()

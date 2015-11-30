@@ -25,8 +25,15 @@ abstract class Func extends \yii\base\Object
      */
     public static function listFunctions(){
         return [
+            NULL => None::className(),
             'count' => Count::className(),
             'date' => Date::className(),
+            'max' => Max::className(),
+            'max' => Min::className(),
+            'year' => Year::className(),
+            'month' => Month::className(),
+            'not null' => NotNull::className(),
+            'in' => In::className(),
         ];
     }
 
@@ -66,7 +73,7 @@ abstract class Func extends \yii\base\Object
      *
      * @return string
      */
-    public abstract function getLabel();
+    public static abstract function getLabel();
 
     /**
      * Must return the param option
@@ -92,7 +99,7 @@ abstract class Func extends \yii\base\Object
     /**
      * Is the parameter to this function is multiple?
      *
-     * @return string One of 'string', 'date', 'integer'. If NULL not parameter is used.
+     * @return string One of 'string', 'date', 'integer'. If NULL no parameter is used.
      */
     public abstract function getIsMultiple();
 
