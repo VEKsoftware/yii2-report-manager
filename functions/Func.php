@@ -92,7 +92,7 @@ abstract class Func extends \yii\base\Object
     /**
      * Is the parameter to this function is multiple?
      *
-     * @return string One of 'string', 'date', 'integer'
+     * @return string One of 'string', 'date', 'integer'. If NULL not parameter is used.
      */
     public abstract function getIsMultiple();
 
@@ -101,9 +101,10 @@ abstract class Func extends \yii\base\Object
      *
      * @return string
      */
-    public function prepareSql($param)
+    public function prepareSql()
     {
-        return '[[attribute]]';
+        $attribute = $this->condition->attribute_name;
+        return "[[$attribute]]";
     }
 
     /**

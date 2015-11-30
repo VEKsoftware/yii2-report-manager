@@ -69,8 +69,9 @@ class Date extends Func
      *
      * @return string
      */
-    public function prepareSql($param)
+    public function prepareSql()
     {
+        $attribute = $this->condition->attribute_name;
         return "UNIX_TIMESTAMP([[$attribute]])";
     }
 

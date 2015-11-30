@@ -64,14 +64,4 @@ class None extends Func
         return false;
     }
 
-    /**
-     * Prepare SQL string for ActiveQuery
-     *
-     * @return string
-     */
-    public function prepareSql($param)
-    {
-        return '[[attribute]]';
-    }
-
 }

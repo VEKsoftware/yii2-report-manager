@@ -69,13 +69,15 @@ class Count extends Func
      *
      * @return string
      */
-    public function prepareSql($param)
+    public function prepareSql()
     {
+        $param = $this->condition->value;
+        $attribute = $this->condition->attribute_name;
         return is_array($param) && count($param)>0 ?
             "COUNT(IF([[$attribute]] IN ("
                 .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
             ."),1,NULL))"
-            : 'COUNT(*)';
+            : "COUNT([[$attribute]])";
     }
 
 }

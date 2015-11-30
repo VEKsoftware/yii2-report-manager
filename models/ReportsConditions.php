@@ -281,9 +281,9 @@ class ReportsConditions extends \yii\db\ActiveRecord
 
     public function validateValue($attribute, $val)
     {
-        if (! isset($this->currentFunction['paramType'])) return false;
+        if ($this->functionObj->paramType === NULL) return false;
 
-        switch($this->currentFunction['paramType']) {
+        switch($this->functionObj->paramType) {
         case 'integer':
             if (! is_int($val)) {
                 $this->addError($attribute, Yii::t('reportmanager', '{attribute} must be integer'));
@@ -378,8 +378,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
      */
     public function prepareQuery($query, $index)
     {
-        $field = $this->currentFunction && $this->currentFunction['func'] ?
-                call_user_func($this->currentFunction['func'],$this->attribute_name, $this->value) : $this->attribute_name;
+        $field = $this->functionObj->prepareSql();
         switch($this->operation) {
             case 'select':
                 // Here I need to add property to the target class accroding to alias

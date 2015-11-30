@@ -69,9 +69,14 @@ class Max extends Func
      *
      * @return string
      */
-    public function prepareSql($param)
+    public function prepareSql()
     {
-        return '[[attribute]]';
-    }
+        $attribute = $this->condition->attribute_name;
+        $param = $this->condition->value;
+        return is_array($param) && count($param)>0 ?
+            "MAX(IF([[$attribute]] IN ("
+                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
+            ."),1,NULL))"
+            : "MAX([[$attribute]])";
 
 }
