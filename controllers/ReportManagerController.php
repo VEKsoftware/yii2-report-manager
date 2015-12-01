@@ -78,17 +78,17 @@ class ReportManagerController extends Controller
      */
     public function actionCreate()
     {
-        $model = Reports::instantiate([]);
+        $report = Reports::instantiate([]);
 
         if(! $report->isAllowed('create')) {
             throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+        if ($report->load(Yii::$app->request->post()) && $report->save()) {
+            return $this->redirect(['update', 'id' => $report->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'model' => $report,
             ]);
         }
     }

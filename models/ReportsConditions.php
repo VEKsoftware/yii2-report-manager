@@ -133,24 +133,20 @@ class ReportsConditions extends \yii\db\ActiveRecord
         $this->_function = Func::instantiate(['condition' => $this]);
     }
 
-    public function initReportCondition()
-    {
-        if(!$this->report) return;
-        $all_conditions = ArrayHelper::index($this->report->getAvailableProps(),'attribute');
-        $this->_config = isset($this->attribute_name) && isset($all_conditions[$this->attribute_name]) ? $all_conditions[$this->attribute_name] : NULL;
-    }
-
     public function init()
     {
         parent::init();
         if(!isset($this->operation)) $this->operation = 'select';
+        $this->functionObj = $this->function;
     }
 
     public function afterFind()
     {
         parent::afterFind();
-        $this->initReportCondition();
         if($this->param) $this->value = unserialize($this->param);
+        if(!$this->report) return;
+        $all_conditions = ArrayHelper::index($this->report->getAvailableProps(),'attribute');
+        $this->_config = isset($this->attribute_name) && isset($all_conditions[$this->attribute_name]) ? $all_conditions[$this->attribute_name] : NULL;
         $this->functionObj = $this->function;
 
     }
