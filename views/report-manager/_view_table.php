@@ -8,10 +8,12 @@ use reportmanager\models\ClassSearch;
 /* @var $this yii\web\View */
 /* @var $model reportmanager\models\Reports */
 
-//var_dump($model->columns);
-//die();
 ?>
 <div class="reports-view-table">
+
+<?php if(count($model->columns) > 0): ?>
+
+<?php $models = $dataProvider->models ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,4 +27,7 @@ use reportmanager\models\ClassSearch;
             return $item->functionObj->prepareTable();
         })),
     ]) ?>
+
+<?php endif ?>
+
 </div>

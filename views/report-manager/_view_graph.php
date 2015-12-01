@@ -13,43 +13,43 @@ use yii\web\JsExpression;
 /* @var $model reportmanager\models\Reports */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$models = $dataProvider->models;
 
-if(count($models) <= 0) {
-    return;
-}
+if(count($model->columns) > 0):
 
-$columns = $model->columns;
-if(count($columns) <= 0) return;
+    $models = $dataProvider->models;
+    if(count($models) <= 0) return;
 
-$x_column = NULL;
-foreach($columns as $col) {
-    if($col->alias === $model->graph_x) {
-        $x_column = $col;
-        break;
+    $columns = $model->columns;
+    if(count($columns) <= 0) return;
+
+    $x_column = NULL;
+    foreach($columns as $col) {
+        if($col->alias === $model->graph_x) {
+            $x_column = $col;
+            break;
+        }
     }
-}
 
-foreach($columns as $col) {
-    if($col->alias === $x_column->alias) {
-        continue;
+    foreach($columns as $col) {
+        if($col->alias === $x_column->alias) {
+            continue;
+        }
+        $plot_data[] = [
+            'label' => $col->label,
+            'data' => array_map(function($item) use($col, $x_column){
+                $alias_y = $col->alias;
+                if(is_object($x_column)) {
+                    $alias_x = $x_column->alias;
+                    return [$x_column->functionObj->prepareGraph($item->$alias_x),$col->functionObj->prepareGraph($item->$alias_y)];
+                } else {
+                    return [$col->functionObj->prepareGraph($item->$alias_y)];
+                }
+            },$models),
+            'lines'  => ['show' => true],
+            'points' => ['show' => true],
+        ];
+
     }
-    $plot_data[] = [
-        'label' => $col->label,
-        'data' => array_map(function($item) use($col, $x_column){
-            $alias_y = $col->alias;
-            if(is_object($x_column)) {
-                $alias_x = $x_column->alias;
-                return [$x_column->functionObj->prepareGraph($item->$alias_x),$col->functionObj->prepareGraph($item->$alias_y)];
-            } else {
-                return [$col->functionObj->prepareGraph($item->$alias_y)];
-            }
-        },$models),
-        'lines'  => ['show' => true],
-        'points' => ['show' => true],
-    ];
-
-}
 ?>
 
 <div class="reports-view-graph">
@@ -174,3 +174,4 @@ foreach($columns as $col) {
     ') ?>
 
 </div>
+<?php endif ?>

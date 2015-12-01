@@ -141,8 +141,12 @@ class ReportManagerController extends Controller
             throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
         }
 
-        if($condition->load(Yii::$app->request->post()) && $condition->save() && NULL !== Yii::$app->request->post('save')) {
-            return $this->redirect(['update', 'id' => $report->id]);
+        if($condition->load(Yii::$app->request->post()) && $condition->save()) {
+            if(NULL !== Yii::$app->request->post('save')) {
+                return $this->redirect(['update', 'id' => $report->id]);
+            } else {
+                return $this->redirect(['condition', 'report_id' => $report->id, 'id' => $condition->id]);
+            }
         }
 
         $condDataProvider = new ActiveDataProvider([
