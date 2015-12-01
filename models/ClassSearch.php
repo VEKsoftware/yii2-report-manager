@@ -46,7 +46,11 @@ class ClassSearch extends \yii\db\ActiveRecord
      */
     public function attributes()
     {
-        return array_merge(parent::attributes(),$this->_custom_attributes);
+        if($this->_custom_attributes) {
+            return array_merge(parent::attributes(),$this->_custom_attributes);
+        } else {
+            return parent::attributes();
+        }
     }
 
     /**

@@ -53,7 +53,7 @@ class Date extends Func
      */
     public function getParamType()
     {
-        return 'date';
+        return 'string';
     }
 
     /**
@@ -72,7 +72,10 @@ class Date extends Func
     public function prepareSql()
     {
         $attribute = $this->condition->attribute_name;
-        return "UNIX_TIMESTAMP([[$attribute]])";
+        if(Yii::$app->db->driverName === 'mysql')
+            return "UNIX_TIMESTAMP([[$attribute]])";
+        elseif(Yii::$app->db->driverName === 'pgsql')
+            return "EXTRACT(EPOCH from [[$attribute]])";
     }
 
     /**

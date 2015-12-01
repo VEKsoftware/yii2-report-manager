@@ -13,6 +13,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
+        "bburim/flot": "dev-master",
         "bburim/daterangepicker": "dev-master"
     },
     "autoload": {

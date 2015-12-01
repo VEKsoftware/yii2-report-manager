@@ -34,7 +34,8 @@ class ReportsConditions extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%reports_conditions}}';
+//        return '{{%reports_conditions}}';
+        return 'taxi.reports_conditions';
     }
 
     /**
@@ -138,6 +139,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         parent::init();
         if(!isset($this->operation)) $this->operation = 'select';
         $this->functionObj = $this->function;
+        $this->order = 0;
     }
 
     public function initReportCondition()
