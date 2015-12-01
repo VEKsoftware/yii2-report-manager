@@ -34,8 +34,8 @@ class ReportsConditions extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-//        return '{{%reports_conditions}}';
-        return 'taxi.reports_conditions';
+        return '{{%reports_conditions}}';
+//        return 'taxi.reports_conditions';
     }
 
     /**
