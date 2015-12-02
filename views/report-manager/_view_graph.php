@@ -51,9 +51,6 @@ if(count($model->columns) > 0):
 
     }
 ?>
-<pre>
-    <?php //var_dump($plot_data) ?>
-</pre>
 
 <div class="reports-view-graph">
 
