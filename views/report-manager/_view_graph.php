@@ -51,6 +51,9 @@ if(count($model->columns) > 0):
 
     }
 ?>
+<pre>
+    <?php //var_dump($plot_data) ?>
+</pre>
 
 <div class="reports-view-graph">
 
@@ -59,8 +62,8 @@ if(count($model->columns) > 0):
         'options' => [
             'xaxis' => [
                 'mode' => $x_column->functionObj->type === 'date' ? 'time' : none,
-                'timeformat' => '%b %Y',
-                'minTickSize' => [1, 'month'],
+//                'timeformat' => $x_column->value,
+//                'minTickSize' => [1, 'month'],
 //                'monthNames' => $monthNames,
 //                'min' => new JsExpression('localStorage.getItem("report-range-min")'),
 //                'max' => new JsExpression('localStorage.getItem("report-range-max")'),

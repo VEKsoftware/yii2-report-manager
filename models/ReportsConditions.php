@@ -193,7 +193,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
 
             foreach ($value as $k => $v) {
                 if (! $v) {
-                    unset($value[$k]);
+                    unset($this->value[$k]);
                     continue;
                 }
                 if(! $this->validateValue($attribute, $v)) return false;

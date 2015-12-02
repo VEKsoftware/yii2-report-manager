@@ -92,13 +92,20 @@ class Date extends Func
             'value' => function($model) use($condition){
                 $prop = $condition->alias;
                 $format = is_string($condition->value) ? $condition->value : NULL;
-                return Yii::$app->formatter->asDate($model->$prop, $format);
+                $date = new \DateTime;
+                $date->setTimestamp($model->$prop);
+                return $date->format($format);
             },
         ];
     }
 
     public function prepareGraph($val)
     {
-        return $val*1000;
+        $format = is_string($this->condition->value) ? $this->condition->value : NULL;
+        $date = new \DateTime;
+        $date->setTimestamp($val);
+        $date_formatted = $date->format($format);
+        $datetime = \DateTime::createFromFormat('!'.$format,$date_formatted);
+        return $datetime ? 1000*$datetime->getTimestamp() : 0;//$val*1000;
     }
 }
