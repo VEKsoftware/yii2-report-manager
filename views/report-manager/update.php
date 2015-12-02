@@ -17,11 +17,11 @@ $this->params['breadcrumbs'][] = Yii::t('reportmanager', 'Update');
 <div class="reports-update">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php /*Pjax::begin([
+    <?php Pjax::begin([
         'id' => 'all',
         'formSelector' => 'form',
         'scrollTo' => false,
-    ]) */?>
+    ]) ?>
 <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
 
   <div class="row">
@@ -66,5 +66,5 @@ $("form[data-pjax]").on("change",function(event){
 ') ?>
 
 <?php ActiveForm::end(); ?>
-    <?php //Pjax::end() ?>
+    <?php Pjax::end() ?>
 </div>

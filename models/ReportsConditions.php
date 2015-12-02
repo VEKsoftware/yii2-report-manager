@@ -57,6 +57,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             [['value'],'required', 'when' => function($model){
                     return $model->functionObj->paramRequired === 'required';
                 },
+                'whenClient' => new \yii\web\JsExpression('function(attribute,value){return false;}'),
             ],
 
             [['value'], 'validateValues'],
@@ -186,7 +187,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
         // If paramType is set and multiple we expect an array
         if($this->functionObj->isMultiple) {
             if(!is_array($value)) {
-                $this->addError($attribute, Yii::t('Parameter must be an array. Check for option "multiple" in config of ReportManager'));
+                $this->addError($attribute, Yii::t('reportmanager','Parameter must be an array. Check for option "multiple" in config of ReportManager'));
                 return false;
             }
 

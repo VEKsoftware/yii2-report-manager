@@ -21,7 +21,7 @@ use reportmanager\models\ReportsConditions;
             if(is_array($model->value)) {
                 $all_values = $model->config['values'];
                 $values = array_map(function($v) use($all_values){
-                    return $all_values[$v];
+                    return array_key_exists($v,$all_values) ? $all_values[$v] : NULL;
                 }, $model->value);
                 $param = join(', ',$values);
             } else {
