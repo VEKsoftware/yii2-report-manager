@@ -25,6 +25,7 @@ return [
     'Condition' => 'Условие',
     'Grouping' => 'Группировка',
     'Order' => 'Упорядочение',
+    'Order Inversed' => 'Обратное Упорядочение',
     'Among Values' => 'Среди',
     'Creator' => 'Создатель',
     'Access Group' => 'Группа доступа',

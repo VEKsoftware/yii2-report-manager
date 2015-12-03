@@ -106,6 +106,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             'where' => Yii::t('reportmanager','Condition'),
             'group' => Yii::t('reportmanager','Grouping'),
             'order' => Yii::t('reportmanager','Order'),
+            'order_inv' => Yii::t('reportmanager','Order Inversed'),
         ];
     }
 
@@ -318,6 +319,9 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 break;
             case 'order':
                 $query->addOrderBy($field);
+                break;
+            case 'order_inv':
+                $query->addOrderBy([$field => SORT_DESC]);
                 break;
         }
     }
