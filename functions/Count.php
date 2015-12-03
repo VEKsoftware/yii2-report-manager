@@ -73,18 +73,19 @@ class Count extends Func
     {
         $param = $this->condition->value;
         $attribute = $this->condition->attribute_name;
-        if(Yii::$app->db->driverName === 'mysql')
-            return is_array($param) && count($param)>0 ?
+        if(Yii::$app->db->driverName === 'mysql') {
+            return (is_array($param) && count($param)>0) ?
                 "COUNT(IF([[$attribute]] IN ("
                     .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
                 ."),1,NULL))"
                 : "COUNT([[$attribute]])";
-        elseif(Yii::$app->db->driverName === 'pgsql')
+        } elseif(Yii::$app->db->driverName === 'pgsql') {
             return is_array($param) && count($param)>0 ?
                 "COUNT( CASE WHEN [[$attribute]] IN ("
                     .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
                 .") THEN 1 ELSE NULL END)"
                 : "COUNT([[$attribute]])";
+        }
     }
 
 }

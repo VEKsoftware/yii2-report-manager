@@ -73,9 +73,13 @@ class In extends Func
     {
         $param = $this->condition->value;
         $attribute = $this->condition->attribute_name;
-        return "[[$attribute]] IN ("
-            .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
-        .")";
+        if(is_array($param) && count($param)>0) {
+            return "[[$attribute]] IN ("
+                .implode(", ",array_map(function($val){ return \Yii::$app->db->quoteValue($val); },$param))
+            .")";
+        } else {
+            return NULL;
+        }
     }
 
 }

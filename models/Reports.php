@@ -336,9 +336,9 @@ abstract class Reports extends \yii\db\ActiveRecord
         $query->select([]);
 
         $columns = [];
-        foreach($this->reportsConditions as $index => $cond) {
+        foreach($this->reportsConditions as $cond) {
             // !!!!! May be dataProvider shoud be sent instead of query ?????
-            $cond->prepareQuery($query,$index);
+            $cond->prepareQuery($query);
         }
 
         $query_class = $query->modelClass;

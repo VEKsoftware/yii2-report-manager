@@ -53,6 +53,8 @@ class ReportsConditions extends \yii\db\ActiveRecord
             [['attribute_name'],function(){ $this->initReportCondition(); return true;}],
 
             // should be called after attribute_name
+            [['value'], 'validateValues'],
+
             // This validator checks for param is to be required field
             [['value'],'required', 'when' => function($model){
                     return $model->functionObj->paramRequired === 'required';
@@ -60,7 +62,6 @@ class ReportsConditions extends \yii\db\ActiveRecord
                 'whenClient' => new \yii\web\JsExpression('function(attribute,value){return false;}'),
             ],
 
-            [['value'], 'validateValues'],
 
         ];
     }
@@ -299,12 +300,11 @@ class ReportsConditions extends \yii\db\ActiveRecord
      * Apply current condition will be applied to a query using this function.
      *
      * @param \yii\db\ActiveQuery $query The query object which current condition must be applied to
-     * @param integer $index The index of this condition. It will be used for alias formation
-//     * @param \reportmanager\ReportManagerInterface $model An object of the class related to the report. We use it to add a property from SELECT statement.
      */
-    public function prepareQuery($query, $index)
+    public function prepareQuery($query)
     {
         $field = $this->functionObj->prepareSql();
+        if(! $field) return NULL;
         switch($this->operation) {
             case 'select':
                 // Here I need to add property to the target class accroding to alias
