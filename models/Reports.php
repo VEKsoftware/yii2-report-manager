@@ -220,8 +220,61 @@ abstract class Reports extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ReportsConditions::className(), ['report_id' => 'id'])
             ->with('report')
-            ->orderBy(['operation' => SORT_ASC,'attribute_name' => SORT_ASC,'function' => SORT_ASC])
+//            ->orderBy(['operation' => SORT_ASC,'attribute_name' => SORT_ASC,'function' => SORT_ASC])
+            ->orderBy(['order' => SORT_ASC])
             ->inverseOf('report');
+    }
+
+    /**
+     * change order of conditons so that $condition_id wolud go into $direction
+     *
+     * @param $conditon_id integer The id of ReportsConditions element
+     * @param $direction string Either "up" or "down"
+     *
+     * @return \yii\db\ActiveQuery All related conditions for the Report
+     */
+    public function moveCondition($condition_id, $direction)
+    {
+        $conditions = $this->reportsConditions;
+        if(count($conditions) <= 1) return;
+
+        if($direction === 'up') {
+            foreach($conditions as $k => $v) {
+                if($v->id === $condition_id && $k > 0) {
+                    $v->order = $k-1;
+//                    $tmp = $v;
+//                    $v = $conditions[$k-1];
+//                    $v->order = $k;
+//                    $conditions[$k-1] = $tmp;
+                    $conditions[$k-1]->order = $k;
+                }
+            }
+        } elseif($direction === 'down') {
+            $max_key = count($conditions) - 1;
+            foreach($conditions as $k => $v) {
+                if($v->id === $condition_id && $k < $max_key) {
+                    $v->order = $k+1;
+//                    $tmp = $v;
+//                    $v = $conditions[$k+1];
+//                    $v->order = $k;
+//                    $conditions[$k+1] = $tmp;
+                    $conditions[$k+1]->order = $k;
+                }
+            }
+        }
+//        $this->reportsConditions = $conditions;
+    }
+
+    /**
+     * Save the changes in all all related conditions
+     *
+     * @return \yii\db\ActiveQuery All related conditions for the Report
+     */
+    public function saveConditions()
+    {
+        foreach($this->reportsConditions as $k => $v) {
+            $v->save();
+        }
     }
 
     public function getColumns()

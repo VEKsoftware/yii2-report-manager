@@ -127,7 +127,7 @@ class ReportManagerController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionCondition($report_id, $id=NULL)
+    public function actionCondition($report_id, $id = NULL, $operation = NULL)
     {
         if($id) {
             $condition = $this->findCondition($id);
@@ -139,6 +139,10 @@ class ReportManagerController extends Controller
 
         if(! $report->isAllowed('update')) {
             throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+        }
+        if(Yii::$app->request->post('operation')) {
+            $report->moveCondition($condition->id,Yii::$app->request->post('operation'));
+            $report->saveConditions();
         }
 
         if($condition->load(Yii::$app->request->post()) && $condition->save()) {
@@ -158,6 +162,7 @@ class ReportManagerController extends Controller
             'report' => $report,
             'condDataProvider' => $condDataProvider,
             'condition' => $condition,
+            'operation' => $operation,
         ]);
     }
 

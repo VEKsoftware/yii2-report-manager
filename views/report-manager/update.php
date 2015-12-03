@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = Yii::t('reportmanager', 'Update');
         'condDataProvider' => $condDataProvider,
         'form' => $form,
         'condition' => $condition,
+        'operation' => $operation,
     ]) ?>
     <?php endif ?>
   </div>
@@ -55,6 +56,7 @@ $this->params['breadcrumbs'][] = Yii::t('reportmanager', 'Update');
     <?= $this->render('_form_condition', [
         'model' => $condition,
         'form' => $form,
+        'operation' => $operation,
     ]) ?>
     <?php endif ?>
   </div>

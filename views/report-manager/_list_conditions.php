@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ListView;
+use yii\web\JsExpression;
 use reportmanager\models\ReportsConditions;
 
 ?>
@@ -38,10 +39,35 @@ use reportmanager\models\ReportsConditions;
             .($param ? $param : '')
         ;
 
-        return isset($condition) && $condition->id == $model->id ?
-            Html::tag('span',$title) :
-            Html::a($title, ['condition','report_id' => $model->report->id,'id' => $model->id])
+        return ''
+            .Html::a('▲',['condition','report_id' => $model->report->id,'id' => $model->id],[
+                'data' => [
+                    'operation' => 'up',
+                ],
+            ])
+            .Html::a('▼',['condition','report_id' => $model->report->id,'id' => $model->id],[
+                'data' => [
+                    'operation' => 'down',
+                ],
+            ])
+            .(isset($condition) && $condition->id == $model->id ?
+                Html::tag('span',$title) :
+                Html::a($title, ['condition','report_id' => $model->report->id,'id' => $model->id])
+            )
         ;
     },
 //*/
+
 ]) ?>
+
+<?php
+
+$this->registerJs('
+if ($.support.pjax) {
+    $(document).on("click", "a[data-operation]", function(event) {
+        $.pjax.click(event, {type: "post", push: false, container: "#all", data: {operation: $(event.currentTarget).attr("data-operation")}})
+    })
+}
+');
+
+?>
