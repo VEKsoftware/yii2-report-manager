@@ -47,6 +47,7 @@ class ReportsConditions extends \yii\db\ActiveRecord
             [['report_id', 'attribute_name', 'operation'], 'required'],
             [['report_id'], 'integer'],
             [['operation'], 'string', 'max' => 20],
+            [['operation'], 'in', 'range' => array_keys($this->operationsList)],
             [['attribute_name', 'function','plan'], 'string', 'max' => 255],
             [['col_label'], 'string', 'max' => 128 ],
 
