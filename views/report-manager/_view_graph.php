@@ -29,7 +29,7 @@ if(count($model->columns) > 0):
             break;
         }
     }
-
+    $plot_data = [];
     foreach($columns as $col) {
         if($x_column && $col->alias === $x_column->alias) {
             continue;

@@ -41,6 +41,11 @@ class ReportManagerController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->isGuest) {
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
+        }
+
+
         $repDataProvider = new ActiveDataProvider([
             'query' => Reports::findReports(),
             'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
@@ -60,7 +65,7 @@ class ReportManagerController extends Controller
     {
         $report = $this->findModel($id);
         if(! $report->isAllowed('view')) {
-            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
 
         $dataProvider = $report->generateReport(Yii::$app->request->queryParams);
@@ -81,7 +86,7 @@ class ReportManagerController extends Controller
         $report = Reports::instantiate([]);
 
         if(! $report->isAllowed('create')) {
-            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
 
         if ($report->load(Yii::$app->request->post()) && $report->save()) {
@@ -104,7 +109,7 @@ class ReportManagerController extends Controller
         $report = $this->findModel($id);
 
         if(! $report->isAllowed('update')) {
-            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
         if($report->load(Yii::$app->request->post()) && $report->save() && NULL !== Yii::$app->request->post('save-report')) {
             return $this->redirect(['view', 'id' => $report->id]);
@@ -138,7 +143,7 @@ class ReportManagerController extends Controller
         }
 
         if(! $report->isAllowed('update')) {
-            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
         if(Yii::$app->request->post('operation')) {
             $report->moveCondition($condition->id,Yii::$app->request->post('operation'));
@@ -177,7 +182,7 @@ class ReportManagerController extends Controller
         $report = $condition->report;
 
         if(! $report->isAllowed('update')) {
-            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
 
         $report_id = $condition->report_id;
@@ -197,7 +202,7 @@ class ReportManagerController extends Controller
         $report = $this->findModel($id);
 
         if(! $report->isAllowed('delete')) {
-            throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
+            throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
 
         $report->delete();
