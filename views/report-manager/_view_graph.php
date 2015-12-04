@@ -31,7 +31,7 @@ if(count($model->columns) > 0):
     }
 
     foreach($columns as $col) {
-        if($col->alias === $x_column->alias) {
+        if($x_column && $col->alias === $x_column->alias) {
             continue;
         }
         $plot_data[] = [
