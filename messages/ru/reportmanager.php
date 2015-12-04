@@ -41,6 +41,7 @@ return [
     'Count' => 'Посчитать',
     'Year' => 'Год',
     'Month' => 'Месяц',
+    'Day' => 'День',
     'Not Empty' => 'Не пустое',
 
     // reportmanager\models\Reports

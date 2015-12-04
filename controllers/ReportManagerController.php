@@ -63,7 +63,7 @@ class ReportManagerController extends Controller
             throw new \yii\web\ForbiddenException(Yii::t('reportmanager','Access restricted'));
         }
 
-        $dataProvider = $report->generateReport();
+        $dataProvider = $report->generateReport(Yii::$app->request->queryParams);
 
         return $this->render('view', [
             'model' => $report,
