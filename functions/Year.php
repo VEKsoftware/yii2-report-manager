@@ -71,6 +71,9 @@ class Year extends Func
     {
         $attribute = $this->condition->attribute_name;
         $param = $this->condition->value;
-        return "YEAR([[$attribute]])";
+        if($this->driver === 'mysql')
+            return "YEAR([[$attribute]])";
+        elseif($this->driver === 'mysql')
+            return "EXTRACT(YEAR FROM [[$attribute]])";
     }
 }

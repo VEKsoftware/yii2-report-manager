@@ -136,4 +136,9 @@ abstract class Func extends \yii\base\Object
         return $val;
     }
 
+    public function getDriver()
+    {
+        return Yii::$app->db->driverName;
+    }
+
 }

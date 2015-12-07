@@ -73,6 +73,9 @@ class Month extends Func
     {
         $attribute = $this->condition->attribute_name;
         $param = $this->condition->value;
-        return "MONTH([[$attribute]])";
+        if($this->driver === 'mysql')
+            return "MONTH([[$attribute]])";
+        elseif($this->driver === 'mysql')
+            return "EXTRACT(MONTH FROM [[$attribute]])";
     }
 }
