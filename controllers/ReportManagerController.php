@@ -128,7 +128,6 @@ class ReportManagerController extends Controller
 
     /**
      * Work on conditions
-
      * @param integer $id
      * @return mixed
      */

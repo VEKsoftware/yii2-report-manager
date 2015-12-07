@@ -79,7 +79,7 @@ abstract class Func extends \yii\base\Object
     /**
      * Must return the param option
      *
-     * @return string One of 'required', 'optional' or ''/NULL
+     * @return string One of 'required', 'optional' or 'NULL'
      */
     public abstract function getParamRequired();
 
