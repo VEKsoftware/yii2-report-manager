@@ -32,6 +32,7 @@ abstract class Func extends \yii\base\Object
             'max' => Min::className(),
             'year' => Year::className(),
             'month' => Month::className(),
+            'day' => Day::className(),
             'not null' => NotNull::className(),
             'in' => In::className(),
         ];

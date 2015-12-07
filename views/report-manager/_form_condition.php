@@ -37,6 +37,7 @@ use reportmanager\models\ReportsConditions;
                     [
                         'prompt' => Yii::t('reportmanager','Select...'),
                         'multiple' => true,
+                        'size' => 16,
                     ]) ?>
             <?php else: ?>
                 <?= $form->field($model, "value")->textInput() ?>
