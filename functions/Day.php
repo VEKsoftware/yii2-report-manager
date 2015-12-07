@@ -73,7 +73,10 @@ class Day extends Func
     {
         $attribute = $this->condition->attribute_name;
         $param = $this->condition->value;
-        return "DAY([[$attribute]])";
+        if($this->driver === 'mysql')
+            return "DAY([[$attribute]])";
+        elseif($this->driver === 'pgsql')
+            return "EXTRACT(DAY FROM [[$attribute]])";
     }
 
 }
