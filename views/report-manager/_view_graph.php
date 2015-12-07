@@ -53,12 +53,11 @@ if(count($model->columns) > 0):
 ?>
 
 <div class="reports-view-graph">
-
     <?= Chart::widget([
         'data' => $plot_data,
         'options' => [
             'xaxis' => [
-                'mode' => $x_column->functionObj->type === 'date' ? 'time' : none,
+                'mode' => is_object($x_column) && $x_column->functionObj->type === 'date' ? 'time' : 'none',
 //                'timeformat' => $x_column->value,
 //                'minTickSize' => [1, 'month'],
 //                'monthNames' => $monthNames,
