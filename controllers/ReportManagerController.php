@@ -116,7 +116,7 @@ class ReportManagerController extends Controller
         }
 
         $condDataProvider = new ActiveDataProvider([
-            'query' => ReportsConditions::find()->where(['report_id' => $report->id])->with('report'),
+            'query' => $report->getReportsconditions()->with('report'),
             'sort' => ['defaultOrder' => ['order' => SORT_ASC]],
         ]);
 
@@ -138,18 +138,19 @@ class ReportManagerController extends Controller
             $report = $condition->report;
         } else {
             $report = $this->findModel($report_id);
+//            die("RC: ".count($report->reportsConditions));
             $condition = new ReportsConditions(['report_id' => $report->id]);
+            $condition->order = count($report->reportsConditions)+1;
         }
 
         if(! $report->isAllowed('update')) {
             throw new \yii\web\ForbiddenHttpException(Yii::t('reportmanager','Access restricted'));
         }
+
         if(Yii::$app->request->post('operation')) {
             $report->moveCondition($condition->id,Yii::$app->request->post('operation'));
             $report->saveConditions();
-        }
-
-        if($condition->load(Yii::$app->request->post()) && $condition->save()) {
+        } elseif($condition->load(Yii::$app->request->post()) && $condition->save()) {
             if(NULL !== Yii::$app->request->post('save')) {
                 return $this->redirect(['update', 'id' => $report->id]);
             } else {
@@ -158,7 +159,7 @@ class ReportManagerController extends Controller
         }
 
         $condDataProvider = new ActiveDataProvider([
-            'query' => ReportsConditions::find()->where(['report_id' => $report->id])->with('report'),
+            'query' => $report->getReportsConditions()->with('report'),
             'sort' => ['defaultOrder' => ['order' => SORT_ASC]],
         ]);
 

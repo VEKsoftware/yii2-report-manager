@@ -87,14 +87,22 @@ class ReportsConditions extends \yii\db\ActiveRecord
     {
         $conditions = [];
         $ids = array_filter(ArrayHelper::getColumn($cond_array,'id'));
-        $cond = ArrayHelper::index(ReportsConditions::find()->where(['and', ['id' => $ids], ['report_id' => $report_id]])->with('report')->all(),'id');
+//*
+        $known_cond = ArrayHelper::index(ReportsConditions::find()
+                ->where(['and', ['id' => $ids], ['report_id' => $report_id]])
+                ->orderBy('order')
+                ->with('report')
+                ->all()
+        ,'id');
+//*/
+//        $known_cond = 
         foreach($cond_array as $k => $cond_params) {
-            if($cond_params['id'] && isset($cond[$cond_params['id']])) {
+            if($cond_params['id'] && isset($known_cond[$cond_params['id']])) {
                 $cond_item = $cond[$cond_params['id']];
-                $cond_item->order = $k;
+                $cond_item->order = $k+1;
                 $conditions[] = $cond_item;
             } else {
-                $conditions[] = new self(['report_id' => $report_id, 'order' => $k]);
+                $conditions[] = new self(['report_id' => $report_id, 'order' => $k+1]);
             }
         }
         return $conditions;
