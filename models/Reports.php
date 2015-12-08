@@ -329,7 +329,6 @@ abstract class Reports extends \yii\db\ActiveRecord
         if(! $dataProvider instanceof ActiveDataProvider) {
             throw new \yii\base\InvalidParamException('The ReportManagerInterface::search() method must return ActiveDataProvider object');
         }
-
         $query = $dataProvider->query;
 
         // Remove all select statements from initial query to prepare for the next cycle
@@ -347,7 +346,15 @@ abstract class Reports extends \yii\db\ActiveRecord
         ClassSearch::$report = $this;
 
         $sql = $query->createCommand()->rawSql;
-        $dataProvider->query=ClassSearch::findBySql($sql);
+
+        $page = (integer) Yii::$app->getRequest()->getQueryParam('page');
+        $page = (isset($page) && $page > 0) ? ($page - 1) : 0;
+
+        $per_page = $dataProvider->pagination->getPageSize();
+        $offset = $page * $per_page;
+        
+        $dataProvider->query = ClassSearch::findBySql($sql);
+        $dataProvider->models = array_slice($dataProvider->models, $offset, $per_page);
 
         return $dataProvider;
     }
