@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/119871c4/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/b9bdc254/style.css" rel="stylesheet">
+<script src="./assets/63136c85/jquery.js"></script>
+<script src="./assets/119871c4/js/bootstrap.js"></script>
+<script src="./assets/9b66ef07/jssearch.js"></script>    <title>Func, reportmanager\functions\Func - Yii Framework 2.0 API Documentation</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w118" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w118-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Yii Framework 2.0 API Documentation</a></div><div id="w118-collapse" class="collapse navbar-collapse"><ul id="w119" class="navbar-nav nav"><li><a href="./index.html">Class reference</a></li></ul><div class="navbar-form navbar-left" role="search">
+  <div class="form-group">
+    <input id="searchbox" type="text" class="form-control" placeholder="Search">
+  </div>
+</div>
+</div></nav>
+    <div id="search-resultbox" style="display: none;" class="modal-content">
+        <ul id="search-results">
+        </ul>
+    </div>
+
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-110" data-toggle="collapse" data-parent="#navigation">cebe\jssearch <b class="caret"></b></a><div id="navigation-110" class="submenu panel-collapse collapse"><a class="list-group-item" href="./cebe-jssearch-analyzerinterface.html">AnalyzerInterface</a>
+<a class="list-group-item" href="./cebe-jssearch-indexer.html">Indexer</a>
+<a class="list-group-item" href="./cebe-jssearch-tokenizerinterface.html">TokenizerInterface</a></div>
+<a class="list-group-item" href="#navigation-111" data-toggle="collapse" data-parent="#navigation">cebe\jssearch\analyzer <b class="caret"></b></a><div id="navigation-111" class="submenu panel-collapse collapse"><a class="list-group-item" href="./cebe-jssearch-analyzer-htmlanalyzer.html">HtmlAnalyzer</a></div>
+<a class="list-group-item" href="#navigation-112" data-toggle="collapse" data-parent="#navigation">cebe\jssearch\tokenizer <b class="caret"></b></a><div id="navigation-112" class="submenu panel-collapse collapse"><a class="list-group-item" href="./cebe-jssearch-tokenizer-standardtokenizer.html">StandardTokenizer</a></div>
+<a class="list-group-item" href="#navigation-113" data-toggle="collapse" data-parent="#navigation">reportmanager <b class="caret"></b></a><div id="navigation-113" class="submenu panel-collapse collapse"><a class="list-group-item" href="./reportmanager-reportmanager.html">ReportManager</a>
+<a class="list-group-item" href="./reportmanager-reportmanagerinterface.html">ReportManagerInterface</a></div>
+<a class="list-group-item" href="#navigation-114" data-toggle="collapse" data-parent="#navigation">reportmanager\controllers <b class="caret"></b></a><div id="navigation-114" class="submenu panel-collapse collapse"><a class="list-group-item" href="./reportmanager-controllers-reportmanagercontroller.html">ReportManagerController</a></div>
+<a class="list-group-item active" href="#navigation-115" data-toggle="collapse" data-parent="#navigation">reportmanager\functions <b class="caret"></b></a><div id="navigation-115" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./reportmanager-functions-count.html">Count</a>
+<a class="list-group-item" href="./reportmanager-functions-date.html">Date</a>
+<a class="list-group-item" href="./reportmanager-functions-day.html">Day</a>
+<a class="list-group-item active" href="./reportmanager-functions-func.html">Func</a>
+<a class="list-group-item" href="./reportmanager-functions-in.html">In</a>
+<a class="list-group-item" href="./reportmanager-functions-max.html">Max</a>
+<a class="list-group-item" href="./reportmanager-functions-min.html">Min</a>
+<a class="list-group-item" href="./reportmanager-functions-month.html">Month</a>
+<a class="list-group-item" href="./reportmanager-functions-none.html">None</a>
+<a class="list-group-item" href="./reportmanager-functions-notnull.html">NotNull</a>
+<a class="list-group-item" href="./reportmanager-functions-year.html">Year</a></div>
+<a class="list-group-item" href="#navigation-116" data-toggle="collapse" data-parent="#navigation">reportmanager\migrations <b class="caret"></b></a><div id="navigation-116" class="submenu panel-collapse collapse"><a class="list-group-item" href="./reportmanager-migrations-migration.html">Migration</a></div>
+<a class="list-group-item" href="#navigation-117" data-toggle="collapse" data-parent="#navigation">reportmanager\models <b class="caret"></b></a><div id="navigation-117" class="submenu panel-collapse collapse"><a class="list-group-item" href="./reportmanager-models-classsearch.html">ClassSearch</a>
+<a class="list-group-item" href="./reportmanager-models-reports.html">Reports</a>
+<a class="list-group-item" href="./reportmanager-models-reportsconditions.html">ReportsConditions</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>Abstract Class reportmanager\functions\Func</h1>
+<div id="nav">
+    <a href="index.html">All Classes</a>
+            | <a href="#properties">Properties</a>
+                | <a href="#methods">Methods</a>
+            </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-value" />
+    </colgroup>
+            <tr><th>Inheritance</th><td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a> &raquo;
+yii\base\Object</td></tr>
+                            <tr><th>Subclasses</th><td><a href="reportmanager-functions-count.html">reportmanager\functions\Count</a>, <a href="reportmanager-functions-date.html">reportmanager\functions\Date</a>, <a href="reportmanager-functions-day.html">reportmanager\functions\Day</a>, <a href="reportmanager-functions-in.html">reportmanager\functions\In</a>, <a href="reportmanager-functions-max.html">reportmanager\functions\Max</a>, <a href="reportmanager-functions-min.html">reportmanager\functions\Min</a>, <a href="reportmanager-functions-month.html">reportmanager\functions\Month</a>, <a href="reportmanager-functions-none.html">reportmanager\functions\None</a>, <a href="reportmanager-functions-notnull.html">reportmanager\functions\NotNull</a>, <a href="reportmanager-functions-year.html">reportmanager\functions\Year</a></td></tr>
+                        </table>
+
+<div id="classDescription">
+    <p><strong>This is an abstract class containing definition of ReportsConditions Functions.</strong></p>
+    
+    </div>
+
+<a id="properties"></a>
+
+<div class="summary doc-property">
+<h2>Public Properties</h2>
+
+<p><a href="#" class="toggle">Hide inherited properties</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-property" />
+    <col class="col-type" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Property</th><th>Type</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr id="$condition">
+        <td><a href="reportmanager-functions-func.html#$condition-detail">$condition</a></td>
+        <td></td>
+        <td>The parent ReportsConditions object</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+    </table>
+</div>
+
+<a id="methods"></a>
+
+<div class="summary doc-method">
+<h2>Public Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr id="getDriver()">
+        <td><a href="reportmanager-functions-func.html#getDriver()-detail">getDriver()</a></td>
+        <td></td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="getId()">
+        <td><a href="reportmanager-functions-func.html#getId()-detail">getId()</a></td>
+        <td>The id string for current function</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="getIsMultiple()">
+        <td><a href="reportmanager-functions-func.html#getIsMultiple()-detail">getIsMultiple()</a></td>
+        <td>Is the parameter to this function is multiple?</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="getLabel()">
+        <td><a href="reportmanager-functions-func.html#getLabel()-detail">getLabel()</a></td>
+        <td>The label string for current function</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="getParamRequired()">
+        <td><a href="reportmanager-functions-func.html#getParamRequired()-detail">getParamRequired()</a></td>
+        <td>Must return the param option</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="getParamType()">
+        <td><a href="reportmanager-functions-func.html#getParamType()-detail">getParamType()</a></td>
+        <td>Type of parameter accepted by the function</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="getType()">
+        <td><a href="reportmanager-functions-func.html#getType()-detail">getType()</a></td>
+        <td>Type of output of the function</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="instantiate()">
+        <td><a href="reportmanager-functions-func.html#instantiate()-detail">instantiate()</a></td>
+        <td>Instantiates proper function class for current ReportsConditions object</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="listFunctions()">
+        <td><a href="reportmanager-functions-func.html#listFunctions()-detail">listFunctions()</a></td>
+        <td>The list of all functions in the system</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="prepareGraph()">
+        <td><a href="reportmanager-functions-func.html#prepareGraph()-detail">prepareGraph()</a></td>
+        <td>Prepare output string for rendering Graph</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="prepareSql()">
+        <td><a href="reportmanager-functions-func.html#prepareSql()-detail">prepareSql()</a></td>
+        <td>Prepare SQL string for ActiveQuery</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+            <tr id="prepareTable()">
+        <td><a href="reportmanager-functions-func.html#prepareTable()-detail">prepareTable()</a></td>
+        <td>Prepare output string for rendering Table.</td>
+        <td><a href="reportmanager-functions-func.html">reportmanager\functions\Func</a></td>
+    </tr>
+    </table>
+</div>
+
+<a id="events"></a>
+
+<a id="constants"></a>
+
+<h2>Property Details</h2>
+
+<div class="property-doc">
+
+    <div class="detail-header h3" id="$condition-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#$condition-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        $condition        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"> <a href="reportmanager-functions-func.html#$condition-detail">$condition</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    
+    
+</div>
+<h2>Method Details</h2>
+
+<div class="method-doc">
+
+    <div class="detail-header h3" id="getDriver()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getDriver()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getDriver()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong></strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="reportmanager-functions-func.html#getDriver()-detail">getDriver</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+            </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getId()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getId()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getId()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>The id string for current function</strong></p>
+
+        <p>For example, 'sin'</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#getId()-detail">getId</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+            </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getIsMultiple()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getIsMultiple()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getIsMultiple()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Is the parameter to this function is multiple?</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#getIsMultiple()-detail">getIsMultiple</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>One of 'string', 'date', 'integer'. If NULL no parameter is used.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getLabel()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getLabel()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getLabel()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>The label string for current function</strong></p>
+
+        <p>For example, 'Sine'</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#getLabel()-detail">getLabel</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+            </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getParamRequired()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getParamRequired()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getParamRequired()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Must return the param option</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#getParamRequired()-detail">getParamRequired</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>One of 'required', 'optional' or 'NULL'</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getParamType()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getParamType()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getParamType()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Type of parameter accepted by the function</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#getParamType()-detail">getParamType</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>One of 'string', 'date', 'date range'</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getType()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#getType()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getType()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Type of output of the function</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#getType()-detail">getType</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>One of 'string', 'date', 'integer'</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="instantiate()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#instantiate()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        instantiate()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Instantiates proper function class for current ReportsConditions object</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">\reportmanager\functions\Function <strong><a href="reportmanager-functions-func.html#instantiate()-detail">instantiate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$row</span></td>
+                  <td class="param-type-col"></td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="listFunctions()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#listFunctions()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        listFunctions()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>The list of all functions in the system</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="reportmanager-functions-func.html#listFunctions()-detail">listFunctions</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>[function_id => function_class]</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="prepareGraph()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#prepareGraph()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        prepareGraph()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Prepare output string for rendering Graph</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#prepareGraph()-detail">prepareGraph</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$val</span></td>
+                  <td class="param-type-col"></td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="prepareSql()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#prepareSql()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        prepareSql()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Prepare SQL string for ActiveQuery</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#prepareSql()-detail">prepareSql</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+            </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="prepareTable()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="reportmanager-functions-func.html#prepareTable()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        prepareTable()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Prepare output string for rendering Table.</strong></p>
+
+        <p>The outputh of the method will be merged into GridView::columns property and must be in its format.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.string">string</a> <strong><a href="reportmanager-functions-func.html#prepareTable()-detail">prepareTable</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+            </table>
+
+<!--	-->
+</div>
+        </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/,'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/,'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Tue, 08 Dec 2015 09:44:13 +0000</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+var element = document.createElement("script");
+element.src = "./jssearch.index.js";
+document.body.appendChild(element);
+
+var searchBox = $('#searchbox');
+
+// search when typing in search field
+searchBox.on("keyup", function(event) {
+    var query = $(this).val();
+
+    if (query == '' || event.which == 27) {
+        $('#search-resultbox').hide();
+        return;
+    } else if (event.which == 13) {
+        var selectedLink = $('#search-resultbox a.selected');
+        if (selectedLink.length != 0) {
+            document.location = selectedLink.attr('href');
+            return;
+        }
+    } else if (event.which == 38 || event.which == 40) {
+        $('#search-resultbox').show();
+
+        var selected = $('#search-resultbox a.selected');
+        if (selected.length == 0) {
+            $('#search-results').find('a').first().addClass('selected');
+        } else {
+            var next;
+            if (event.which == 40) {
+                next = selected.parent().next().find('a').first();
+            } else {
+                next = selected.parent().prev().find('a').first();
+            }
+            if (next.length != 0) {
+                var resultbox = $('#search-results');
+                var position = next.position();
+
+//              TODO scrolling is buggy and jumps around
+//                resultbox.scrollTop(Math.floor(position.top));
+//                console.log(position.top);
+
+                selected.removeClass('selected');
+                next.addClass('selected');
+            }
+        }
+
+        return;
+    }
+    $('#search-resultbox').show();
+    $('#search-results').html('<li><span class="no-results">No results</span></li>');
+
+    var result = jssearch.search(query);
+
+    if (result.length > 0) {
+        var i = 0;
+        var resHtml = '';
+
+        for (var key in result) {
+            if (i++ > 20) {
+                break;
+            }
+            resHtml = resHtml +
+            '<li><a href="' + result[key].file.u.substr(3) +'"><span class="title">' + result[key].file.t + '</span>' +
+            '<span class="description">' + result[key].file.d + '</span></a></li>';
+        }
+        $('#search-results').html(resHtml);
+    }
+});
+
+// hide the search results on ESC
+$(document).on("keyup", function(event) { if (event.which == 27) { $('#search-resultbox').hide(); } });
+// hide search results on click to document
+$(document).bind('click', function (e) { $('#search-resultbox').hide(); });
+// except the following:
+searchBox.bind('click', function(e) { e.stopPropagation(); });
+$('#search-resultbox').bind('click', function(e) { e.stopPropagation(); });
+
+});</script></body>
+</html>

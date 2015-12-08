@@ -1,0 +1,556 @@
+Array
+(
+    [0] => Array
+        (
+            [line] => 17
+            [file] => ./ReportManager.php
+            [message] => No docblock for element '$controllerNamespace'
+        )
+
+    [1] => Array
+        (
+            [line] => 17
+            [file] => ./ReportManager.php
+            [message] => No short description for element '$controllerNamespace'
+        )
+
+    [2] => Array
+        (
+            [line] => 18
+            [file] => ./ReportManager.php
+            [message] => No docblock for element '$_report_classes'
+        )
+
+    [3] => Array
+        (
+            [line] => 18
+            [file] => ./ReportManager.php
+            [message] => No short description for element '$_report_classes'
+        )
+
+    [4] => Array
+        (
+            [line] => 19
+            [file] => ./ReportManager.php
+            [message] => No docblock for element '$reportModelClass'
+        )
+
+    [5] => Array
+        (
+            [line] => 19
+            [file] => ./ReportManager.php
+            [message] => No short description for element '$reportModelClass'
+        )
+
+    [6] => Array
+        (
+            [line] => 4
+            [file] => ./ReportManagerInterface.php
+            [message] => No docblock for element 'reportmanager\ReportManagerInterface'
+        )
+
+    [7] => Array
+        (
+            [line] => 23
+            [file] => ./controllers/ReportManagerController.php
+            [message] => No docblock for element '$defaultAction'
+        )
+
+    [8] => Array
+        (
+            [line] => 23
+            [file] => ./controllers/ReportManagerController.php
+            [message] => No short description for element '$defaultAction'
+        )
+
+    [9] => Array
+        (
+            [line] => 25
+            [file] => ./controllers/ReportManagerController.php
+            [message] => No docblock for element 'behaviors'
+        )
+
+    [10] => Array
+        (
+            [line] => 235
+            [file] => ./controllers/ReportManagerController.php
+            [message] => No docblock for element 'findCondition'
+        )
+
+    [11] => Array
+        (
+            [line] => 18
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No docblock for element '$index'
+        )
+
+    [12] => Array
+        (
+            [line] => 18
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No short description for element '$index'
+        )
+
+    [13] => Array
+        (
+            [line] => 19
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No docblock for element '$files'
+        )
+
+    [14] => Array
+        (
+            [line] => 19
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No short description for element '$files'
+        )
+
+    [15] => Array
+        (
+            [line] => 21
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No docblock for element 'indexFiles'
+        )
+
+    [16] => Array
+        (
+            [line] => 57
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No docblock for element 'generateFileInfo'
+        )
+
+    [17] => Array
+        (
+            [line] => 73
+            [file] => ./doc/assets/9b66ef07/lib/Indexer.php
+            [message] => No docblock for element 'exportJs'
+        )
+
+    [18] => Array
+        (
+            [line] => 20
+            [file] => ./doc/assets/9b66ef07/lib/analyzer/HtmlAnalyzer.php
+            [message] => No docblock for element '$headWeight'
+        )
+
+    [19] => Array
+        (
+            [line] => 20
+            [file] => ./doc/assets/9b66ef07/lib/analyzer/HtmlAnalyzer.php
+            [message] => No short description for element '$headWeight'
+        )
+
+    [20] => Array
+        (
+            [line] => 21
+            [file] => ./doc/assets/9b66ef07/lib/analyzer/HtmlAnalyzer.php
+            [message] => No docblock for element '$titleWeight'
+        )
+
+    [21] => Array
+        (
+            [line] => 21
+            [file] => ./doc/assets/9b66ef07/lib/analyzer/HtmlAnalyzer.php
+            [message] => No short description for element '$titleWeight'
+        )
+
+    [22] => Array
+        (
+            [line] => 22
+            [file] => ./doc/assets/9b66ef07/lib/analyzer/HtmlAnalyzer.php
+            [message] => No docblock for element '$textWeight'
+        )
+
+    [23] => Array
+        (
+            [line] => 22
+            [file] => ./doc/assets/9b66ef07/lib/analyzer/HtmlAnalyzer.php
+            [message] => No short description for element '$textWeight'
+        )
+
+    [24] => Array
+        (
+            [line] => 106
+            [file] => ./functions/Date.php
+            [message] => No docblock for element 'prepareGraph'
+        )
+
+    [25] => Array
+        (
+            [line] => 140
+            [file] => ./functions/Func.php
+            [message] => No docblock for element 'getDriver'
+        )
+
+    [26] => Array
+        (
+            [line] => 7
+            [file] => ./migrations/Migration.php
+            [message] => No docblock for element 'reportmanager\migrations\Migration'
+        )
+
+    [27] => Array
+        (
+            [line] => 12
+            [file] => ./migrations/Migration.php
+            [message] => No short description for element '$tableOptions'
+        )
+
+    [28] => Array
+        (
+            [line] => 17
+            [file] => ./migrations/Migration.php
+            [message] => Method init has no parent to inherit from in reportmanager\migrations\Migration.
+        )
+
+    [29] => Array
+        (
+            [line] => 25
+            [file] => ./models/ClassSearch.php
+            [message] => No docblock for element '$dynamic_labels'
+        )
+
+    [30] => Array
+        (
+            [line] => 25
+            [file] => ./models/ClassSearch.php
+            [message] => No short description for element '$dynamic_labels'
+        )
+
+    [31] => Array
+        (
+            [line] => 26
+            [file] => ./models/ClassSearch.php
+            [message] => No docblock for element '$table_name'
+        )
+
+    [32] => Array
+        (
+            [line] => 26
+            [file] => ./models/ClassSearch.php
+            [message] => No short description for element '$table_name'
+        )
+
+    [33] => Array
+        (
+            [line] => 28
+            [file] => ./models/ClassSearch.php
+            [message] => No docblock for element '$report'
+        )
+
+    [34] => Array
+        (
+            [line] => 28
+            [file] => ./models/ClassSearch.php
+            [message] => No short description for element '$report'
+        )
+
+    [35] => Array
+        (
+            [line] => 33
+            [file] => ./models/ClassSearch.php
+            [message] => Method tableName has no parent to inherit from in reportmanager\models\ClassSearch.
+        )
+
+    [36] => Array
+        (
+            [line] => 38
+            [file] => ./models/ClassSearch.php
+            [message] => No docblock for element 'populateRecord'
+        )
+
+    [37] => Array
+        (
+            [line] => 47
+            [file] => ./models/ClassSearch.php
+            [message] => Method attributes has no parent to inherit from in reportmanager\models\ClassSearch.
+        )
+
+    [38] => Array
+        (
+            [line] => 69
+            [file] => ./models/ClassSearch.php
+            [message] => Method attributeLabels has no parent to inherit from in reportmanager\models\ClassSearch.
+        )
+
+    [39] => Array
+        (
+            [line] => 26
+            [file] => ./models/Reports.php
+            [message] => No docblock for element '$classes_list'
+        )
+
+    [40] => Array
+        (
+            [line] => 26
+            [file] => ./models/Reports.php
+            [message] => No short description for element '$classes_list'
+        )
+
+    [41] => Array
+        (
+            [line] => 27
+            [file] => ./models/Reports.php
+            [message] => No docblock for element '$conditions'
+        )
+
+    [42] => Array
+        (
+            [line] => 27
+            [file] => ./models/Reports.php
+            [message] => No short description for element '$conditions'
+        )
+
+    [43] => Array
+        (
+            [line] => 28
+            [file] => ./models/Reports.php
+            [message] => No docblock for element '$module'
+        )
+
+    [44] => Array
+        (
+            [line] => 28
+            [file] => ./models/Reports.php
+            [message] => No short description for element '$module'
+        )
+
+    [45] => Array
+        (
+            [line] => 29
+            [file] => ./models/Reports.php
+            [message] => No docblock for element '$show'
+        )
+
+    [46] => Array
+        (
+            [line] => 29
+            [file] => ./models/Reports.php
+            [message] => No short description for element '$show'
+        )
+
+    [47] => Array
+        (
+            [line] => 30
+            [file] => ./models/Reports.php
+            [message] => No docblock for element '$graph_x'
+        )
+
+    [48] => Array
+        (
+            [line] => 30
+            [file] => ./models/Reports.php
+            [message] => No short description for element '$graph_x'
+        )
+
+    [49] => Array
+        (
+            [line] => 38
+            [file] => ./models/Reports.php
+            [message] => Method tableName has no parent to inherit from in reportmanager\models\Reports.
+        )
+
+    [50] => Array
+        (
+            [line] => 46
+            [file] => ./models/Reports.php
+            [message] => Method rules has no parent to inherit from in reportmanager\models\Reports.
+        )
+
+    [51] => Array
+        (
+            [line] => 64
+            [file] => ./models/Reports.php
+            [message] => Method attributeLabels has no parent to inherit from in reportmanager\models\Reports.
+        )
+
+    [52] => Array
+        (
+            [line] => 80
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'listShowOptions'
+        )
+
+    [53] => Array
+        (
+            [line] => 89
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'transactions'
+        )
+
+    [54] => Array
+        (
+            [line] => 124
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'initClass'
+        )
+
+    [55] => Array
+        (
+            [line] => 236
+            [file] => ./models/Reports.php
+            [message] => Undefined parameter documented: $conditon_id in moveCondition().
+        )
+
+    [56] => Array
+        (
+            [line] => 280
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'getColumns'
+        )
+
+    [57] => Array
+        (
+            [line] => 318
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'generateReport'
+        )
+
+    [58] => Array
+        (
+            [line] => 362
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'beforeSave'
+        )
+
+    [59] => Array
+        (
+            [line] => 372
+            [file] => ./models/Reports.php
+            [message] => No docblock for element 'beforeDelete'
+        )
+
+    [60] => Array
+        (
+            [line] => 29
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element '$value'
+        )
+
+    [61] => Array
+        (
+            [line] => 29
+            [file] => ./models/ReportsConditions.php
+            [message] => No short description for element '$value'
+        )
+
+    [62] => Array
+        (
+            [line] => 30
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element '$reportModelClass'
+        )
+
+    [63] => Array
+        (
+            [line] => 30
+            [file] => ./models/ReportsConditions.php
+            [message] => No short description for element '$reportModelClass'
+        )
+
+    [64] => Array
+        (
+            [line] => 35
+            [file] => ./models/ReportsConditions.php
+            [message] => Method tableName has no parent to inherit from in reportmanager\models\ReportsConditions.
+        )
+
+    [65] => Array
+        (
+            [line] => 44
+            [file] => ./models/ReportsConditions.php
+            [message] => Method rules has no parent to inherit from in reportmanager\models\ReportsConditions.
+        )
+
+    [66] => Array
+        (
+            [line] => 73
+            [file] => ./models/ReportsConditions.php
+            [message] => Method attributeLabels has no parent to inherit from in reportmanager\models\ReportsConditions.
+        )
+
+    [67] => Array
+        (
+            [line] => 86
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'createConditions'
+        )
+
+    [68] => Array
+        (
+            [line] => 111
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'getOperationsList'
+        )
+
+    [69] => Array
+        (
+            [line] => 122
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'getConditionLabel'
+        )
+
+    [70] => Array
+        (
+            [line] => 127
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'getFunctionsList'
+        )
+
+    [71] => Array
+        (
+            [line] => 138
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'getFunctionObj'
+        )
+
+    [72] => Array
+        (
+            [line] => 143
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'setFunctionObj'
+        )
+
+    [73] => Array
+        (
+            [line] => 149
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'init'
+        )
+
+    [74] => Array
+        (
+            [line] => 157
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'initReportCondition'
+        )
+
+    [75] => Array
+        (
+            [line] => 166
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'afterFind'
+        )
+
+    [76] => Array
+        (
+            [line] => 189
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'validateValues'
+        )
+
+    [77] => Array
+        (
+            [line] => 214
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'validateValue'
+        )
+
+    [78] => Array
+        (
+            [line] => 333
+            [file] => ./models/ReportsConditions.php
+            [message] => No docblock for element 'beforeSave'
+        )
+
+)
