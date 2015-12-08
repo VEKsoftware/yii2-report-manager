@@ -1,6 +1,6 @@
 Report Manager
 ==============
-Extension for generation reports and setting plans
+Extension for generation reports by end users.
 
 Installation
 ------------
@@ -25,20 +25,19 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, you need to set it up in your config file web.php (main.php) :
+Once the extension is installed, you need to set up it in your config file web.php (main.php) :
 
 ```php
     'modules' => [
         'reportmanager' => [
             'class' => 'reportmanager\ReportManager',
+            'reportModelClass' => 'The model which must inherit an abstract class reportmanager\models\Reports',
             'reportClasses' => [
-                '\app\models\ClassSearch1',
-                '\app\models\ClassSearch2',
+                '\app\models\ClassSearch1', // The models for tables which will be used in the report manager
+                '\app\models\ClassSearch2', // The reportClasses must implement ReportManagerInterface.
                 ...
                 '\app\models\ClassSearchN',
             ],
-        ]
+        ],
     ]
 ```
-
-The reportClasses must implement ReportManagerInterface.
